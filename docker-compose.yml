@@ -12,6 +12,8 @@ services:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
     restart: always
+    volumes:
+      - db_data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
     
@@ -22,3 +24,6 @@ services:
       - 8080:80
     environment:
       - PMA_ARBITRARY=1
+
+volumes:
+  db_data:
