@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Dropzone</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="../Estilos/styleProducto.css">
+</head>
+<body>
+    <form class="dropzone-box" id="dropzone-box" method="post">
+        <div class="dropzone-box-area">
+            <h2>Nuevo producto</h2>
+            <div class="dropzone-area" id="dropzone-area">
+                <div class="file-upload-icon">
+                    <!-- svg icon -->
+                </div>
+                <p>Imagen del producto</p>
+                <p>+</p>
+                <input type="file" required id="upload-file" name="uploaded-file" accept=".png, .jpeg, .gif">
+                <input type="hidden" id="image-url" name="image-url">
+            </div>
+            <br>
+            <p>Nombre del Amigurumi:</p>
+            <input type="text" id="Name" name="Name">
+            <br>
+            <p>Coste:</p>
+            <input type="text" id="Priece" name="Priece" placeholder="0.00">
+            <br>
+            <p>Descripcion:</p>
+            <textarea id="Descripcion" name="Descripcion"></textarea>
+            <div class="dropzone-actions">
+                <button type="reset">Cancel</button>
+                <button id="submit-button" type="button">Save</button>
+            </div>
+        </div>
+    </form>
+    <script src="../Scripts/scriptProducto.js"></script>
+</body>
+</html>
