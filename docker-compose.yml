@@ -1,34 +1,35 @@
 # le agregae nombres a los contenedores
-version: '3.8'  
+version: '3.8'
 
 services:
   php-env:
     build: .
-    container_name: contenedor_web  
+    container_name: contenedor_web
     volumes:
       - ./src:/var/www/html
     ports:
-      - "9000:80" 
+      - "9000:80"
 
   mysql_db:
     image: mysql:latest
-    container_name: bases_datos  
-    command: --default-authentication-plugin=mysql_native_password
+    container_name: bases_datos
+    command: ["mysqld", "--mysql-native-password=ON"]
     restart: always
     volumes:
-      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql #esto es para que cree las tablas
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
       - db_data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: "root"
 
   phpmyadmin:
     image: phpmyadmin:latest
-    container_name: contenedor_phpmyadmin 
+    container_name: contenedor_phpmyadmin
     restart: always
     ports:
-      - "8080:80"  
+      - "8080:80"
     environment:
-      PMA_ARBITRARY: '1' 
+      PMA_ARBITRARY: '1'
 
 volumes:
   db_data:
+
