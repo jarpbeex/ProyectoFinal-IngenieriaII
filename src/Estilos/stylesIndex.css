@@ -169,13 +169,11 @@ section h2 {
     font-size: 2em;
     margin-bottom: 10px;
     color: #fff;
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
 }
 
 section p {
     font-size: 1.2em;
     color: #f4f4f4;
-    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
 }
 
 footer {
