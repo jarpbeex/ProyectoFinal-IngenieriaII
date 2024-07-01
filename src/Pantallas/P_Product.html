@@ -21,7 +21,8 @@
                 </div>
                 <p>Imagen del producto</p>
                 <p>+</p>
-                <input type="file" required id="upload-file" name="uploaded-file" accept=".png, .jpeg, .gif">
+                <button type="button" id="open-gallery">Seleccionar desde la Galería</button>
+                <!-- En lugar de input file -->
                 <input type="hidden" id="image-url" name="image-url">
             </div>
             <br>
@@ -31,14 +32,50 @@
             <p>Coste:</p>
             <input type="text" id="Priece" name="Priece" placeholder="0.00">
             <br>
-            <p>Descripcion:</p>
+            <p>Descripción:</p>
             <textarea id="Descripcion" name="Descripcion"></textarea>
             <div class="dropzone-actions">
-                <button type="reset">Cancel</button>
-                <button id="submit-button" type="button">Save</button>
+                <button type="reset">Cancelar</button>
+                <button id="submit-button" type="button">Guardar</button>
             </div>
         </div>
     </form>
     <script src="../Scripts/scriptProducto.js"></script>
+    <script>
+        document.getElementById('open-gallery').addEventListener('click', function() {
+            const galleryWindow = window.open('https://raularica.github.io/Index.html', 'Galería', 'width=800,height=600');
+            
+            window.addEventListener('message', function(event) {
+                // Quitar la validación del origen para pruebas iniciales
+                // if (event.origin !== 'https://raularica.github.io') return;
+                console.log(`Message received from: ${event.origin}`); // Depuración
+                console.log(`Message data: ${event.data}`); // Depuración
+                const selectedImageUrl = event.data;
+                document.getElementById('dropzone-area').innerHTML = `<img src="${selectedImageUrl}" alt="Preview">`;
+                document.getElementById('image-url').value = selectedImageUrl;
+            });
+        });
+
+        document.getElementById('submit-button').addEventListener('click', function() {
+            $.ajax({
+                type: "POST",
+                url: "../Server/Producto.php",
+                data: $("#dropzone-box").serialize(),
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        alert("Cambios guardados correctamente.");
+                    } else {
+                        console.log("Respuesta inesperada del servidor:", response);
+                        alert("Ocurrió un problema.");
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error("Error en la solicitud AJAX:", textStatus, errorThrown);
+                    alert("Error al conectar con el servidor. Intente de nuevo más tarde.");
+                }
+            });
+        });
+    </script>
 </body>
 </html>

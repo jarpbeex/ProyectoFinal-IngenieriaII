@@ -80,7 +80,7 @@ body {
     opacity: 0.5;
 }
 
-.dropzone-area [type="file"] {
+.dropzone-area [type="button"] {
     cursor: pointer;
     position: absolute;
     opacity: 0;
