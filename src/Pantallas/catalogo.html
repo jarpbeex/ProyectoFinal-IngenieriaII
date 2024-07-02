@@ -35,32 +35,28 @@
             <form id="registerEmailForm">
                 <label for="email">Correo electrónico:</label>
                 <input type="email" id="email" name="email" required>
-                <button type="submit">Registrar</button>
+                <p></p><button type="submit">Registrar</button></p>
             </form>
         </div>
     </div>
 
     <!-- Modal de registro de información adicional -->
-<div id="registerAdditionalInfoModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Registro de Información Adicional</h2>
-        <form id="registerAdditionalInfoForm">
-            <!-- Agregar campos adicionales según necesidad -->
-            <label for="firstName">Nombre:</label>
-            <input type="text" id="firstName" name="firstName" required>
-            <label for="lastName">Apellido:</label>
-            <input type="text" id="lastName" name="lastName" required>
-            <label for="phoneNumber">Número de Teléfono:</label>
-            <input type="tel" id="phoneNumber" name="phoneNumber" required>
-            <label for="password">Contraseña:</label>
-            <input type="password" id="password" name="password" required>
-            <label for="confirmPassword">Confirmar Contraseña:</label>
-            <input type="password" id="confirmPassword" name="confirmPassword" required>
-            <button type="submit">Registrar</button>
-        </form>
+    <div id="registerAdditionalInfoModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Registro de Información Adicional</h2>
+            <form id="registerAdditionalInfoForm">
+                <!-- Agregar campos adicionales según necesidad -->
+                <label for="firstName">Nombre:</label>
+                <input type="text" id="firstName" name="firstName" required>
+                <label for="lastName">Apellido:</label>
+                <input type="text" id="lastName" name="lastName" required>
+                <label for="phoneNumber">Número de Teléfono:</label>
+                <input type="tel" id="phoneNumber" name="phoneNumber" required>
+                <p></p><button type="submit">Registrar</button></p>
+            </form>
+        </div>
     </div>
-</div>
 
     <!-- Notificación de registro exitoso -->
     <div id="notification" class="notification">
@@ -78,35 +74,47 @@
                 <img src="../Assets/bonny-coneja-.jpg" alt="Amigurumi 1">
                 <h2>Bonny Coneja</h2>
                 <p>Una encantadora conejita amigurumi con diadema.</p>
-                <button>Precio</button>
+                <h4>B/. 15.00</h4>
+                <button>Realizar Pedido</button>
             </article>
             <article>
                 <img src="../Assets/hans-oso-pardo.jpg" alt="Amigurumi 2">
                 <h2>Hans Oso Pardo</h2>
                 <p>Un osito amigurumi abrazable con beanie.</p>
-                <button>Precio</button>
+                <h4>B/. 15.00</h4>
+                <button>Realizar Pedido</button>
             </article>
             <article>
                 <img src="../Assets/junior-foca.jpg" alt="Amigurumi 3">
                 <h2>Junior Foca</h2>
                 <p>Un amigurumi adorable con gran personalidad.</p>
-                <button>Precio</button>
+                <h4>B/. 18.00</h4>
+                <button>Realizar Pedido</button>
             </article>
             <article>
                 <img src="../Assets/priscilla-pinkzilla.jpg" alt="Amigurumi 2">
                 <h2>Priscilla Pinkzilla</h2>
                 <p>Un amigurumi único en forma de criatura rosa con un toque de monstruo amigable.</p>
-                <button>Precio</button>
+                <h4>B/. 22.00</h4>
+                <button>Realizar Pedido</button>
             </article>
             <article>
                 <img src="../Assets/alberto-gaviota.jpg" alt="Amigurumi 2">
                 <h2>Alberto Gaviota</h2>
                 <p>Una gaviota amigurumi con esencia juguetona.</p>
-                <button>Precio</button>
+                <h4>B/. 18.00</h4>
+                <button>Realizar Pedido</button>
             </article>
             <!-- Agregar más artículos aquí -->
         </section>
     </main>
+
+    <!-- Modal de realizar pedido -->
+    <div id="modal-catalogo" class="modal-catalogo">
+        <div class="modal-content">
+            <!-- Aquí se inserta contenido para confirmar pedido -->
+        </div>
+    </div>
 
     <!-- Pie de página -->
     <footer id="contacto" class="footer">
@@ -140,5 +148,6 @@
     <script src="../Scripts/scriptsIndex.js"></script>
     <script src="../Scripts/scriptsModal.js"></script>
     <script src="../Scripts/scriptsNotificacion.js"></script>
+    <script src="../Scripts/scriptsCatalogo.js"></script>
 </body>
 </html>

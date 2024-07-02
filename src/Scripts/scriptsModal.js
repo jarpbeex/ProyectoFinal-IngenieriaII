@@ -56,15 +56,6 @@ document.getElementById('registerAdditionalInfoForm').onsubmit = function(event)
     const firstName = document.getElementById('firstName').value;
     const lastName = document.getElementById('lastName').value;
     const phoneNumber = document.getElementById('phoneNumber').value;
-    const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
-
-    // Verificar que las contraseñas coincidan
-    if (password !== confirmPassword) {
-        alert("Las contraseñas no coinciden. Por favor, inténtalo de nuevo.");
-        return;
-    }
-
     // Aquí puedes enviar los datos del formulario a tu backend
 
     // Simular notificación de registro exitoso
