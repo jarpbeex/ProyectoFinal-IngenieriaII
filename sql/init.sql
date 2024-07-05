@@ -1,33 +1,33 @@
-create database Mugumis
+-- init.sql
 
+CREATE DATABASE IF NOT EXISTS Mugumis;
 
 USE Mugumis;
 
-CREATE TABLE Inventario_de_amigurumis (
+CREATE TABLE IF NOT EXISTS Inventario_de_amigurumis (
     id_amigurumis VARCHAR(50) PRIMARY KEY,
     descripcion VARCHAR(50),
     precio DECIMAL(10, 2),
     cantidad_disponible INT
 );
 
-CREATE TABLE Cliente (
+CREATE TABLE IF NOT EXISTS Cliente (
     id_correo VARCHAR(50) PRIMARY KEY,
     nombre VARCHAR(50),
     apellido VARCHAR(50),
     telefono VARCHAR(20),
     fk_amigurumis VARCHAR(50),
-    FOREIGN KEY (fk_amigurumis) REFERENCES Inventario_de_amigurumis(id_amigurumis);
-
+    FOREIGN KEY (fk_amigurumis) REFERENCES Inventario_de_amigurumis(id_amigurumis)
 );
 
-CREATE TABLE Inventario_materiales (
+CREATE TABLE IF NOT EXISTS Inventario_materiales (
     id_materiales VARCHAR(50) PRIMARY KEY,
     descripcion VARCHAR(50),
     cantidad INT,
     proveedor VARCHAR(50)
 );
 
-CREATE TABLE Empleado (
+CREATE TABLE IF NOT EXISTS Empleado (
     id_empleado VARCHAR(50) PRIMARY KEY,
     nombre VARCHAR(50),
     apellido VARCHAR(50),
@@ -38,7 +38,7 @@ CREATE TABLE Empleado (
     FOREIGN KEY (fk_materiales) REFERENCES Inventario_materiales(id_materiales)
 );
 
-CREATE TABLE Pedido (
+CREATE TABLE IF NOT EXISTS Pedido (
     id_pedido VARCHAR(50) PRIMARY KEY,
     estado VARCHAR(20),
     fecha DATE,

@@ -1,5 +1,7 @@
 FROM php:8.2-apache
-WORKDIR /var/www/html
-RUN apt-get update -y && apt-get install -y libmariadb-dev
-RUN docker-php-ext-install mysqli
-RUN apt-get update && apt-get install -y default-mysql-client
+
+RUN docker-php-ext-install pdo_mysql
+
+COPY . /var/www/html
+
+EXPOSE 80

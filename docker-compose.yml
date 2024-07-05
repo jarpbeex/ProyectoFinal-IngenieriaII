@@ -2,34 +2,34 @@
 version: '3.8'
 
 services:
-  php-env:
-    build: .
-    container_name: contenedor_web
-    volumes:
-      - ./src:/var/www/html
-    ports:
-      - "9000:80"
-
-  mysql_db:
+  mysql:
     image: mysql:latest
-    container_name: bases_datos
-    command: ["mysqld", "--mysql-native-password=ON"]
-    restart: always
-    volumes:
-      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - db_data:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: "root"
-
-  phpmyadmin:
-    image: phpmyadmin:latest
-    container_name: contenedor_phpmyadmin
-    restart: always
+    container_name: baseDatos
     ports:
-      - "8080:80"
+      - "3306:3306"
     environment:
-      PMA_ARBITRARY: '1'
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./baseDatos:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d  # esta linea esta en fase de pruebas
+    networks:
+      - networking
 
-volumes:
-  db_data:
+  php:
+    build: .
+    container_name: servidorPHP
+    ports:
+      - "9090:80"
+    volumes:
+      - ./ProyectoFinal-IngenieriaII:/var/www/html
+    networks:
+      - networking
+    depends_on:
+      - mysql
 
+networks:
+  networking:
+    driver: bridge
+
+#cuando se ejecuta el docker compose se creeara una capeta con los nombres de base Datos y ProyectoFinal-IngenieriaII
+#en el archivo ProyectoFinal-IngenieriaII deben colocar la carpeta src para que se pueda ejecutar dentro del contenedor 
