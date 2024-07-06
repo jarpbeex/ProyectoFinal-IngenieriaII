@@ -1,18 +1,17 @@
 <?php
-// Datos de conexión a la base de datos
-$servername = "localhost";
-$username = "Grupo4";
-$password = "ing2024";
+// Configuración de la base de datos
+$servername = "baseDatos";
+$username = "root";
+$password = "root";
 $database = "Mugumis";
 
-// Crear conexión
-$conn = new mysqli($servername, $username, $password, $database);
-
-// Verificar conexión
-if ($conn->connect_error) {
-    die("Error de conexión: " . $conn->connect_error);
-} else {
-  //echo "<script>console.log('Conexión exitosa');</script>";
+try {
+    // Crear conexión usando PDO
+    $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+    // Establecer el modo de error de PDO a excepción
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    echo "Error de conexión: " . $e->getMessage();
+    exit(); // Detener la ejecución si hay un error de conexión
 }
-//Cerrar conexión (opcional, se cerrará automáticamente al final del script)
-//$conn->close();
+?>

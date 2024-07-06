@@ -19,7 +19,7 @@
         </div>
         <ul>
             <li><a href="index.html">Inicio</a></li>
-            <li><a href="catalogo.html">Catálogo</a></li>
+            <li><a href="catalogo.php">Catálogo</a></li>
             <li><a href="#contacto">Contacto</a></li>
         </ul>
         <div class="user-reg">
@@ -75,29 +75,40 @@
         <h1>Mugumis Disponibles</h1>
         <section>
         <?php
-            require 'C:\Users\arcia\OneDrive\Escritorio\Proyecto ING\ProyectoFinal-IngenieriaII\ProyectoFinal-IngenieriaII\src\Server\DB_Puerto.php';
-            // Consulta para obtener los productos
-            $sql = "SELECT * FROM amigurumis";
-            $result = $conn->query($sql);
+            // Incluir el archivo de conexión
+            require __DIR__ . '/../Server/DB_Puerto.php';
+            try {
+                // Consulta para obtener los productos
+                $sql = "SELECT * FROM inventario_de_amigurumis";
+                $stmt = $conn->query($sql);
 
-            if ($result->num_rows > 0) {
-                // Salida de cada fila
-                while($row = $result->fetch_assoc()) {
-                    echo '<article>';
-                    echo '<img src="' . htmlspecialchars($row["URL"]) . '" alt="' . htmlspecialchars($row["Nombre"]) . '">';
-                    echo '<h2>' . htmlspecialchars($row["Nombre"]) . '</h2>';
-                    echo '<p>' . htmlspecialchars($row["Descripcion"]) . '</p>';
-                    echo '<button>' . htmlspecialchars($row["Precio"]) .' USD'. '</button>';
-                    echo '<p>' . htmlspecialchars($row["Stock"]) .' Disponibles'. '</p>';
-                    echo '</article>';
+                if ($stmt->rowCount() > 0) {
+                    // Salida de cada fila
+                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                        echo '<article>';
+                        echo '<img src="' . htmlspecialchars($row["URL"]) . '" alt="' . htmlspecialchars($row["Nombre"]) . '">';
+                        echo '<h2>' . htmlspecialchars($row["id_amigurumis"]) . '</h2>';
+                        echo '<p>' . htmlspecialchars($row["descripcion"]) . '</p>';
+                        echo '<button>' . htmlspecialchars($row["precio"]) . ' USD</button>';
+                        echo '<p>' . htmlspecialchars($row["cantidad_disponible"]) . ' Disponibles</p>';
+                        echo '</article>';
+                    }
+                } else {
+                    echo 'No hay productos disponibles.';
                 }
-            } else {
-                echo 'No hay productos disponibles.';
+            } catch (PDOException $e) {
+                echo "Error de consulta: " . $e->getMessage();
             }
-            ?>
+        ?>
         </section>
     </main>
-    
+
+    <!-- Modal de realizar pedido -->
+    <div id="modal-catalogo" class="modal-catalogo">
+        <div class="modal-content">
+            <!-- Aquí se inserta contenido para confirmar pedido -->
+        </div>
+    </div>
 
     <!-- Pie de página -->
     <footer id="contacto" class="footer">
@@ -131,5 +142,6 @@
     <script src="../Scripts/scriptsIndex.js"></script>
     <script src="../Scripts/scriptsModal.js"></script>
     <script src="../Scripts/scriptsNotificacion.js"></script>
+    <script src="../Scripts/scriptsCatalogo.js"></script>
 </body>
 </html>

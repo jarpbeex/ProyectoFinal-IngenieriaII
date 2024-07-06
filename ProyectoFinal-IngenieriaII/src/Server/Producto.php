@@ -8,37 +8,36 @@ $Detalle = trim($_POST['Descripcion']);
 $Stock = trim($_POST['Slok']);
 
 function generateProductId($prefix = 'MU', $length = 4) {
-    // Generar un número aleatorio dentro del rango adecuado
     $number = rand(0, 9999);
-    
-    // Formatear el número con ceros a la izquierda
     $formattedNumber = str_pad($number, $length, '0', STR_PAD_LEFT);
-    
-    // Concatenar el prefijo y el número formateado
     return $prefix . $formattedNumber;
 }
 
-// Generar el ID del producto
 $productId = generateProductId();
 
-// Escapar datos para evitar inyecciones SQL
-$URL = mysqli_real_escape_string($conn, $URL);
-$Name = mysqli_real_escape_string($conn, $Name);
-$Cost = mysqli_real_escape_string($conn, $Cost);
-$Detalle = mysqli_real_escape_string($conn, $Detalle);
-$Stock = mysqli_real_escape_string($conn, $Stock);
+try {
+    // Preparar la consulta SQL
+    $sql = "INSERT INTO Inventario_de_amigurumis (`id_amigurumis`, `cantidad_disponible`, `precio`, `descripcion`, `Nombre`, `URL`) 
+            VALUES (:id_amigurumis, :cantidad_disponible, :precio, :descripcion, :Nombre, :URL)";
 
-// Insertar los datos en la base de datos
-$Insert = mysqli_query($conn, "INSERT INTO amigurumis (`ID`, `Stock`, `Precio`, `Descripcion`, `Nombre`, `URL`) VALUES ('$productId', '$Stock','$Cost','$Detalle', '$Name', '$URL')");
+    // Preparar la sentencia
+    $stmt = $conn->prepare($sql);
 
-if ($Insert) {
-    // Si la inserción se realizó correctamente, enviar mensaje de éxito
-    echo json_encode(array('success' => 'La inserción fue grabada con éxito.'));
-} else {
-    // Si hubo un error en la inserción, enviar mensaje de error
-    echo json_encode(array('error' => 'Error al insertar los datos.'));
+    // Vincular los parámetros
+    $stmt->bindParam(':id_amigurumis', $productId);
+    $stmt->bindParam(':cantidad_disponible', $Stock);
+    $stmt->bindParam(':precio', $Cost);
+    $stmt->bindParam(':descripcion', $Detalle);
+    $stmt->bindParam(':Nombre', $Name);
+    $stmt->bindParam(':URL', $URL);
+
+    // Ejecutar la consulta
+    if ($stmt->execute()) {
+        echo json_encode(array('success' => 'La inserción fue grabada con éxito.'));
+    } else {
+        echo json_encode(array('error' => 'Error al insertar los datos.'));
+    }
+} catch (PDOException $e) {
+    echo json_encode(array('error' => 'Error al insertar los datos: ' . $e->getMessage()));
 }
-
-// Cerrar la conexión a la base de datos
-mysqli_close($conn);
 ?>
