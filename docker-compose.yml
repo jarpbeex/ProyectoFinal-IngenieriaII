@@ -1,6 +1,6 @@
 # le agregae nombres a los contenedores
 version: '3.8'
-
+#leer comentarios de abajo ->
 services:
   mysql:
     image: mysql:latest
@@ -25,6 +25,18 @@ services:
     networks:
       - networking
     depends_on:
+      - mysql
+
+  phpmyadmin:
+      image: phpmyadmin
+      restart: always
+      ports:
+        - 8080:80
+      environment:
+        - PMA_ARBITRARY=1
+      networks:
+      - networking
+      depends_on:
       - mysql
 
 networks:

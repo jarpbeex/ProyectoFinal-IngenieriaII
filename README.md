@@ -10,9 +10,15 @@ Pasos para instalar el entorno docker:
 
 ¿Como ingresar a phpmyadmin y a nuestro proyecto?
 - phpmyadmin: http://localhost:8080
-- Abrir nuestra pagina php: http://localhost:9000/
+- Abrir nuestra pagina php: http://localhost:9090/
+- le seguririan los archivos, ejemplo: http://localhost:9090/src/Pantallas/index.html
 
 Iniciar sesión en phpmyadmin:
 - servidor: mysql_db
 - usuario: root
 - contraseña: root
+
+Usuario creado en Mysql:
+-localhost
+-Grupo4
+-ing2024

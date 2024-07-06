@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<!-- Esta pantalla usa el css StyleProducto y el php Producto -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Dropzone</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="../Estilos/styleProducto.css">
+</head>
+<body>
+    <form class="dropzone-box" id="dropzone-box" method="post">
+        <div class="dropzone-box-area">
+            <h2>Nuevo producto</h2>
+            <div class="dropzone-area" id="dropzone-area">
+                <div class="file-upload-icon">
+                    <!-- svg icon -->
+                </div>
+                <p>Imagen del producto</p>
+                <p>+</p>
+                <button type="button" id="open-gallery"></button>
+                <!-- En lugar de input file -->  
+            </div>
+            <input type="hidden" id="image-url" name="image-url">
+            <br>
+            <p>Nombre del Amigurumi:</p>
+            <input type="text" id="Name" name="Name">
+            <br>
+            <p>Coste:</p>
+            <input type="text" id="Priece" name="Priece" placeholder="0.00">
+            <br>
+            <p>Descripción:</p>
+            <textarea id="Descripcion" name="Descripcion"></textarea>
+            <br>
+            <p>Cantidad:</p>
+            <input type="text" id="Slok" name="Slok" placeholder="0">
+            <div class="dropzone-actions">
+                <button type="button" id="Reset">Cancelar</button>
+                <button id="submit-button" type="button">Guardar</button>
+            </div>
+        </div>
+    </form>
+
+    <script>
+        function setupGalleryButton() {
+            const galleryButton = document.getElementById('open-gallery');
+            if (galleryButton) {
+                galleryButton.addEventListener('click', function() {
+                    const galleryWindow = window.open('https://raularica.github.io/Index.html', 'Galería', 'width=800,height=600');
+                    
+                    window.addEventListener('message', function(event) {
+                        console.log(`Message received from: ${event.origin}`); // Depuración
+                        console.log(`Message data: ${event.data}`); // Depuración
+                        const selectedImageUrl = event.data;
+                        document.getElementById('dropzone-area').innerHTML = `<img src="${selectedImageUrl}" alt="Preview">`;
+                        document.getElementById('image-url').value = selectedImageUrl;
+                    }, { once: true });
+                });
+            }
+        }
+        document.getElementById('submit-button').addEventListener('click', function() {
+            const userConfirmed = confirm("¿Estás seguro de que deseas guardar los cambios?");
+            if (userConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: "../Server/Producto.php",
+                    data: $("#dropzone-box").serialize(),
+                    dataType: 'json', // Cambiado a 'json' para manejar la respuesta JSON
+                    success: function(response) {
+                        if (response.success) {
+                            alert("Cambios guardados correctamente.");
+                        } else {
+                            console.log("Respuesta inesperada del servidor:", response); //Consola
+                            alert("Ocurrió un problema.");
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error("Error en la solicitud AJAX:", textStatus, errorThrown); //consola
+                        alert("Error al conectar con el servidor. Intente de nuevo más tarde.");
+                    }
+                });
+            } else {
+                // Si el usuario no confirma, no hacer nada
+            }
+            // location.reload(); //Descomentarlo para su uso real, comentado para ver la consola
+        });
+
+
+        document.getElementById('Reset').addEventListener('click', function() {
+            location.reload();
+        });
+
+        // Inicializar el botón de la galería al cargar la página
+        setupGalleryButton();
+
+    </script>
+</body>
+</html>
