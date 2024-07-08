@@ -14,11 +14,7 @@ Pasos para instalar el entorno docker:
 - le seguririan los archivos, ejemplo: http://localhost:9090/src/Pantallas/index.html
 
 Iniciar sesión en phpmyadmin:
-- servidor: mysql_db
+- servidor: baseDatos
 - usuario: root
 - contraseña: root
 
-Usuario creado en Mysql:
--localhost
--Grupo4
--ing2024

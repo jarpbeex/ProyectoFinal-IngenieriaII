@@ -1,13 +1,13 @@
 // Obtener todos los botones de "Realizar Pedido"
 const buttons = document.querySelectorAll('button');
-
 // Iterar sobre cada botón y agregar un evento clic
 buttons.forEach(button => {
     button.addEventListener('click', function() {
         // Obtener información del artículo
+        console.log("Entrado en scrip");
         const article = this.closest('article');
         const articulo = article.querySelector('h2').textContent;
-        const precio = article.querySelector('h4').textContent;
+        const precio = article.querySelector('p').textContent;
         const imagenSrc = article.querySelector('img').src;
 
         // Mostrar el modal de catálogo

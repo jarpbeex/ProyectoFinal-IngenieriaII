@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mugumis Store</title>
     <link rel="icon" href="../Assets/Mugumis.ico" type="image/x-icon">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../Estilos/stylesIndex.css">
     <link rel="stylesheet" href="../Estilos/stylesModal.css">
@@ -64,6 +65,15 @@
             <p>Datos registrados exitosamente</p>
         </div>
     </div>
+
+    <!-- Notificación de correo existente -->
+    <div id="notificationEmailExists" class="notification">
+        <div class="notification-content">
+            <i class="fa fa-exclamation-circle"></i>
+            <p>El correo electrónico ya está registrado</p>
+        </div>
+    </div>
+
 
     <!-- Encabezado con galería de imágenes -->
     <header>
@@ -150,6 +160,7 @@
 
     <script src="../Scripts/scriptsIndex.js"></script>
     <script src="../Scripts/scriptsModal.js"></script>
-    <script src="../Scripts/scriptsNotificacion.js"></script>
+    <script src="../Scripts/scriptsNotificacion.js?v=1.1"></script>
+    <!-- ?v=N.n al final de un script ayuda a que el navegador actualize cambios realizados subir la cifra por cada cambio importante(1.1 - 1.2... 1.9 - 2.0...N.n) -->
 </body>
 </html>

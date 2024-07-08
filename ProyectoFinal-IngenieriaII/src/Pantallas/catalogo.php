@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mugumis Store</title>
     <link rel="icon" href="../Assets/Mugumis.ico" type="image/x-icon">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../Estilos/stylesIndex.css">
     <link rel="stylesheet" href="../Estilos/stylesModal.css">
@@ -70,6 +71,14 @@
         </div>
     </div>
 
+    <!-- Notificación de correo existente -->
+    <div id="notificationEmailExists" class="notification">
+        <div class="notification-content">
+            <i class="fa fa-exclamation-circle"></i>
+            <p>El correo electrónico ya está registrado</p>
+        </div>
+    </div>   
+
     <!-- Catálogo de productos -->
     <main>
         <h1>Mugumis Disponibles</h1>
@@ -87,7 +96,7 @@
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         echo '<article>';
                         echo '<img src="' . htmlspecialchars($row["URL"]) . '" alt="' . htmlspecialchars($row["Nombre"]) . '">';
-                        echo '<h2>' . htmlspecialchars($row["id_amigurumis"]) . '</h2>';
+                        echo '<h2>' . htmlspecialchars($row["Nombre"]) . '</h2>';
                         echo '<p>' . htmlspecialchars($row["descripcion"]) . '</p>';
                         echo '<button>' . htmlspecialchars($row["precio"]) . ' USD</button>';
                         echo '<p>' . htmlspecialchars($row["cantidad_disponible"]) . ' Disponibles</p>';
@@ -141,7 +150,7 @@
 
     <script src="../Scripts/scriptsIndex.js"></script>
     <script src="../Scripts/scriptsModal.js"></script>
-    <script src="../Scripts/scriptsNotificacion.js"></script>
+    <script src="../Scripts/scriptsNotificacion.js?v=1.1"></script>
     <script src="../Scripts/scriptsCatalogo.js"></script>
 </body>
 </html>
