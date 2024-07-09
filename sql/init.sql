@@ -5,10 +5,13 @@ CREATE DATABASE IF NOT EXISTS Mugumis;
 USE Mugumis;
 
 CREATE TABLE IF NOT EXISTS Inventario_de_amigurumis (
-    id_amigurumis VARCHAR(50) PRIMARY KEY,
-    descripcion VARCHAR(50),
+    id_amigurumis VARCHAR(6) PRIMARY KEY,
+    nombre VARCHAR(25),
+    descripcion VARCHAR(200),
     precio DECIMAL(10, 2),
-    cantidad_disponible INT
+    cantidad_disponible INT,
+    direccion_url VARCHAR(255) NOT NULL,
+    CONSTRAINT chk_url CHECK (direccion_url ~ '^(http|https)://')
 );
 
 CREATE TABLE IF NOT EXISTS Cliente (
