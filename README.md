@@ -13,6 +13,6 @@ Pasos para instalar el entorno docker:
 - Abrir nuestra pagina php: http://localhost:9000/
 
 Iniciar sesión en phpmyadmin:
-- servidor: mysql_db
+- servidor: mysql_db (ya no se necesita el servidor solo usuario y contraseña)
 - usuario: root
 - contraseña: root
