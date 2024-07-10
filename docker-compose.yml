@@ -11,7 +11,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - ./baseDatos:/var/lib/mysql
-      - ./sql:/docker-entrypoint-initdb.d  # esta linea esta en fase de pruebas
+      - ./sql:/docker-entrypoint-initdb.d
     networks:
       - networking
 
@@ -43,5 +43,7 @@ networks:
   networking:
     driver: bridge
 
+
 #cuando se ejecuta el docker compose se creeara una capeta con los nombres de base Datos y ProyectoFinal-IngenieriaII
 #en el archivo ProyectoFinal-IngenieriaII deben colocar la carpeta src para que se pueda ejecutar dentro del contenedor 
+# contraseña y usuario es root
