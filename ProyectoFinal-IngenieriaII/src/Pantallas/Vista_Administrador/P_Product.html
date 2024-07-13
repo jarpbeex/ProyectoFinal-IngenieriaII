@@ -7,20 +7,19 @@
     <link rel="icon" href="../Assets/Mugumis.ico" type="image/x-icon">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="/ProyectoFinal-IngenieriaII/src/Estilos/stylesIndex.css">
-    <link rel="stylesheet" href="/ProyectoFinal-IngenieriaII/src/Estilos/stylesModal.css">
-    <link rel="stylesheet" href="/ProyectoFinal-IngenieriaII/src/Estilos/stylesNotificacion.css">
-    <link rel="stylesheet" href="/ProyectoFinal-IngenieriaII/src/Estilos/styleProducto.css">
+    <link rel="stylesheet" href="/src/Estilos/stylesIndex.css">
+    <link rel="stylesheet" href="/src/Estilos/styleProducto.css">
+
 </head>
 <body>
     <!-- Barra de navegación -->
     <nav>
         <div class="logo">
-            <img src="/ProyectoFinal-IngenieriaII/src/Assets/logoMugumis.png" alt="Logo">
+            <img src="/src/Assets/logoMugumis.png" alt="Logo">
         </div>
         <ul>
-            <li><a href="index.html">Inicio</a></li>
-            <li><a href="catalogo.php">Catálogo</a></li>
+            <li><a href="catalogo.php">Inicio</a></li>
+            <li><a href="p_Product.html">Catálogo</a></li>
             <li><a href="#contacto">Contacto</a></li>
         </ul>
         
@@ -41,6 +40,7 @@
                     <!-- En lugar de input file -->  
                 </div>
                 <input type="hidden" id="image-url" name="image-url">
+                <input type="hidden" id="Id" name="Id">
                 <br>
                 <p>Nombre del Amigurumi:</p>
                 <input type="text" id="Name" name="Name">
@@ -52,7 +52,7 @@
                 <textarea id="Descripcion" name="Descripcion"></textarea>
                 <br>
                 <p>Cantidad:</p>
-                <input type="text" id="Slok" name="Slok" placeholder="0">
+                <input type="text" id="Cantidad" name="Cantidad" placeholder="0">
                 <div class="dropzone-actions">
                     <button type="button" id="Reset">Cancelar</button>
                     <button id="submit-button" type="button">Guardar</button>
@@ -90,9 +90,6 @@
         </div>
     </footer>
 
-    <script src="/ProyectoFinal-IngenieriaII/src/Scripts/scriptsIndex.js"></script>
-    <script src="/ProyectoFinal-IngenieriaII/src/Scripts/scriptsModal.js"></script>
-    <script src="/ProyectoFinal-IngenieriaII/src/Scripts/scriptsNotificacion.js?v=1.1"></script>
     <!-- ?v=N.n al final de un script ayuda a que el navegador actualize cambios realizados subir la cifra por cada cambio importante(1.1 - 1.2... 1.9 - 2.0...N.n) -->
     <script>
         function setupGalleryButton() {
@@ -116,12 +113,13 @@
             if (userConfirmed) {
                 $.ajax({
                     type: "POST",
-                    url: "../Server/Producto.php",
+                    url: "/src/Server/Producto.php",
                     data: $("#dropzone-box").serialize(),
                     dataType: 'json', // Cambiado a 'json' para manejar la respuesta JSON
                     success: function(response) {
                         if (response.success) {
                             alert("Cambios guardados correctamente.");
+                            window.location.href = 'catalogo.php';
                         } else {
                             console.log("Respuesta inesperada del servidor:", response); //Consola
                             alert("Ocurrió un problema.");
@@ -134,18 +132,32 @@
                 });
             } else {
                 // Si el usuario no confirma, no hacer nada
-            }
-            // location.reload(); //Descomentarlo para su uso real, comentado para ver la consola
+            } 
         });
 
 
         document.getElementById('Reset').addEventListener('click', function() {
+            localStorage.removeItem('editAmigurumi');
             location.reload();
         });
 
         // Inicializar el botón de la galería al cargar la página
         setupGalleryButton();
 
+      // Recuperar datos del localStorage y completar el formulario
+      const editAmigurumi = JSON.parse(localStorage.getItem('editAmigurumi'));
+        if (editAmigurumi) {
+            document.getElementById('image-url').value = editAmigurumi.imagenSrc;
+            document.getElementById('Id').value = editAmigurumi.idAmigurumis;
+            document.getElementById('Name').value = editAmigurumi.nombre;
+            document.getElementById('Priece').value = editAmigurumi.precio;
+            document.getElementById('Descripcion').value = editAmigurumi.descripcion;
+            document.getElementById('Cantidad').value = editAmigurumi.cantidadDisponible;
+
+            const dropzoneArea = document.getElementById('dropzone-area');
+            dropzoneArea.innerHTML = `<img src="${editAmigurumi.imagenSrc}" alt="Preview">`;
+        }
+        
     </script>
 </body>
 </html>

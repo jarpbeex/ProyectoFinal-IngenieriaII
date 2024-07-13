@@ -95,13 +95,15 @@
                     // Salida de cada fila
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         echo '<article>';
-                        echo '<img src="' . htmlspecialchars($row["URL"]) . '" alt="' . htmlspecialchars($row["Nombre"]) . '">';
-                        echo '<h2>' . htmlspecialchars($row["Nombre"]) . '</h2>';
+                        echo '<img src="' . htmlspecialchars($row["direccion_url"]) . '" alt="' . htmlspecialchars($row["nombre"]) . '">';
+                        echo '<input type="hidden" value="' . htmlspecialchars($row["id_amigurumis"]) . '">';
+                        echo '<h2>' . htmlspecialchars($row["nombre"]) . '</h2>';
                         echo '<p>' . htmlspecialchars($row["descripcion"]) . '</p>';
-                        echo '<button>' . htmlspecialchars($row["precio"]) . ' USD</button>';
+                        echo '<h4>' . htmlspecialchars($row["precio"]) . ' USD</h4>';
+                        echo '<button id="Comprar">' . 'Realizar Pedido</button>';
                         echo '<p>' . htmlspecialchars($row["cantidad_disponible"]) . ' Disponibles</p>';
                         echo '</article>';
-                    }
+                    }                    
                 } else {
                     echo 'No hay productos disponibles.';
                 }
@@ -151,6 +153,6 @@
     <script src="../Scripts/scriptsIndex.js"></script>
     <script src="../Scripts/scriptsModal.js"></script>
     <script src="../Scripts/scriptsNotificacion.js?v=1.1"></script>
-    <script src="../Scripts/scriptsCatalogo.js"></script>
+    <script src="../Scripts/scriptsCatalogo.js?v=1.1"></script>
 </body>
 </html>

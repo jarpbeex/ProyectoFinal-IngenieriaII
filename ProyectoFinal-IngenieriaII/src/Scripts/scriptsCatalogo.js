@@ -7,7 +7,8 @@ buttons.forEach(button => {
         console.log("Entrado en scrip");
         const article = this.closest('article');
         const articulo = article.querySelector('h2').textContent;
-        const precio = article.querySelector('p').textContent;
+        const Descripcion = article.querySelector('p').textContent;
+        const precio = article.querySelector('h4').textContent;
         const imagenSrc = article.querySelector('img').src;
 
         // Mostrar el modal de catálogo
@@ -21,6 +22,7 @@ buttons.forEach(button => {
             <h2>Pedido</h2>
             <img src="${imagenSrc}" alt="${articulo}" style="width: 100%; height: auto; border-radius: 10px; margin-bottom: 20px;">
             <p>Artículo seleccionado: ${articulo}</p>
+            <p>Descripcion: ${Descripcion}</p>
             <p>Precio: ${precio}</p>
             <input type="email" id="email" placeholder="Correo electrónico" required>
             <p><button id="submitPedido">Confirmar Pedido</button></p>
