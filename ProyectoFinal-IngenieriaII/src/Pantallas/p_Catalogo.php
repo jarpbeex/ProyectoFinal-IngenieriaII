@@ -19,8 +19,8 @@
             <img src="../Assets/logoMugumis.png" alt="Logo">
         </div>
         <ul>
-            <li><a href="index.html">Inicio</a></li>
-            <li><a href="catalogo.php">Catálogo</a></li>
+            <li><a href="p_Inicio.html">Inicio</a></li>
+            <li><a href="p_Catalogo.php">Catálogo</a></li>
             <li><a href="#contacto">Contacto</a></li>
         </ul>
         <div class="user-reg">
@@ -54,10 +54,6 @@
             <input type="text" id="lastName" name="lastName" required>
             <label for="phoneNumber">Número de Teléfono:</label>
             <input type="tel" id="phoneNumber" name="phoneNumber" required>
-            <label for="password">Contraseña:</label>
-            <input type="password" id="password" name="password" required>
-            <label for="confirmPassword">Confirmar Contraseña:</label>
-            <input type="password" id="confirmPassword" name="confirmPassword" required>
             <button type="submit">Registrar</button>
         </form>
     </div>
@@ -132,8 +128,8 @@
             <div class="footer-column">
                 <h3>Navegación</h3>
                 <ul>
-                    <li><a href="index.html">Inicio</a></li>
-                    <li><a href="#catalogo">Catálogo</a></li>
+                    <li><a href="p_Inicio.html">Inicio</a></li>
+                    <li><a href="p_Catalogo.php">Catálogo</a></li>
                     <li><a href="#contacto">Contacto</a></li>
                 </ul>
             </div>
