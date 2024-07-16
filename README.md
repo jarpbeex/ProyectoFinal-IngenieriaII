@@ -18,3 +18,12 @@ Iniciar sesión en phpmyadmin:
 - usuario: root
 - contraseña: root
 
+
+Pantallas
+- Usuario
+    - http://localhost:9090/src/Pantallas/p_Inicio.html
+    - http://localhost:9090/src/Pantallas/p_Catalogo.php
+- Administrador
+    - http://localhost:9090/src/Pantallas/Vista_Administrador/p_Login.html
+    - http://localhost:9090/src/Pantallas/Vista_Administrador/p_GestionCatalogo.php
+    - http://localhost:9090/src/Pantallas/Vista_Administrador/p_Product.html
