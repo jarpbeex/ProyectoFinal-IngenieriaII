@@ -1,12 +1,13 @@
 <?php
 require 'DB_Puerto.php';
 
-$URL = trim($_POST['image-url']);
-$Name = trim($_POST['Name']);
-$Cost = trim($_POST['Priece']);
-$Detalle = trim($_POST['Descripcion']);
-$Stock = trim($_POST['Cantidad']);
+$URL = isset($_POST['image-url']) ? trim($_POST['image-url']) : null;
+$Name = isset($_POST['Name']) ? trim($_POST['Name']) : null;
+$Cost = isset($_POST['Priece']) ? trim($_POST['Priece']) : null;
+$Detalle = isset($_POST['Descripcion']) ? trim($_POST['Descripcion']) : null;
+$Stock = isset($_POST['Cantidad']) ? trim($_POST['Cantidad']) : null;
 $idAmigurumis = isset($_POST['Id']) ? trim($_POST['Id']) : null;
+$action = isset($_POST['action']) ? $_POST['action'] : null;
 
 function generateProductId($prefix = 'MU', $length = 4) {
     $number = rand(0, 9999);
@@ -17,7 +18,18 @@ function generateProductId($prefix = 'MU', $length = 4) {
 $productId = $idAmigurumis ?: generateProductId();
 
 try {
-    if ($idAmigurumis) {
+    if ($action == 'Delete') {
+        
+        // Eliminar un producto existente
+        $sql = "DELETE FROM Inventario_de_amigurumis WHERE id_amigurumis = '$idAmigurumis'";
+
+        // Ejecutar la consulta
+        if ($conn->exec($sql)) {
+            echo json_encode(array('success' => 'El producto fue eliminado con éxito.'));
+        } else {
+            echo json_encode(array('error' => 'Error al eliminar el producto.'.$idAmigurumis));
+        }
+    } else if ($idAmigurumis) {
         // Actualizar un producto existente
         $sql = "UPDATE Inventario_de_amigurumis SET 
                     cantidad_disponible = :cantidad_disponible,

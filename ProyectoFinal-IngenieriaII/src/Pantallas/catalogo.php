@@ -151,7 +151,7 @@
     </footer>
 
     <script src="../Scripts/scriptsIndex.js"></script>
-    <script src="../Scripts/scriptsModal.js"></script>
+    <script src="../Scripts/scriptsModal.js?v=1.1"></script>
     <script src="../Scripts/scriptsNotificacion.js?v=1.1"></script>
     <script src="../Scripts/scriptsCatalogo.js?v=1.1"></script>
 </body>
