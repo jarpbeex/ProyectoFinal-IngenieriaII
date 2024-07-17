@@ -1,17 +1,20 @@
 -- init.sql
 
-CREATE DATABASE IF NOT EXISTS Mugumis;
+CREATE DATABASE Mugumis;
 
 USE Mugumis;
 
-CREATE TABLE IF NOT EXISTS Inventario_de_amigurumis (
-    id_amigurumis VARCHAR(50) PRIMARY KEY,
-    descripcion VARCHAR(50),
+CREATE TABLE Inventario_de_amigurumis (
+    id_amigurumis VARCHAR(6) PRIMARY KEY,
+    nombre VARCHAR(25),
+    descripcion VARCHAR(200),
     precio DECIMAL(10, 2),
-    cantidad_disponible INT
+    cantidad_disponible INT,
+    direccion_url VARCHAR(255) NOT NULL,
+    CONSTRAINT chk_url CHECK (direccion_url REGEXP '^(http|https)://')
 );
 
-CREATE TABLE IF NOT EXISTS Cliente (
+CREATE TABLE Cliente (
     id_correo VARCHAR(50) PRIMARY KEY,
     nombre VARCHAR(50),
     apellido VARCHAR(50),
@@ -20,14 +23,14 @@ CREATE TABLE IF NOT EXISTS Cliente (
     FOREIGN KEY (fk_amigurumis) REFERENCES Inventario_de_amigurumis(id_amigurumis)
 );
 
-CREATE TABLE IF NOT EXISTS Inventario_materiales (
+CREATE TABLE Inventario_materiales (
     id_materiales VARCHAR(50) PRIMARY KEY,
     descripcion VARCHAR(50),
     cantidad INT,
     proveedor VARCHAR(50)
 );
 
-CREATE TABLE IF NOT EXISTS Empleado (
+CREATE TABLE Empleado (
     id_empleado VARCHAR(50) PRIMARY KEY,
     nombre VARCHAR(50),
     apellido VARCHAR(50),
@@ -38,7 +41,7 @@ CREATE TABLE IF NOT EXISTS Empleado (
     FOREIGN KEY (fk_materiales) REFERENCES Inventario_materiales(id_materiales)
 );
 
-CREATE TABLE IF NOT EXISTS Pedido (
+CREATE TABLE Pedido (
     id_pedido VARCHAR(50) PRIMARY KEY,
     estado VARCHAR(20),
     fecha DATE,
@@ -49,4 +52,5 @@ CREATE TABLE IF NOT EXISTS Pedido (
     FOREIGN KEY (fk_empleado) REFERENCES Empleado(id_empleado),
     FOREIGN KEY (fk_cliente) REFERENCES Cliente(id_correo)
 );
+
 

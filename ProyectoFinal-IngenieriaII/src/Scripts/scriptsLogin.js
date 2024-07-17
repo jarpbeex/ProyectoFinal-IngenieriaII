@@ -7,7 +7,7 @@ function Entrar(event) {
     if (usuario === "Administrador" && clave === "Mugumis2024") {
       mostrarToast("Inicio de sesión exitoso", "success");
       setTimeout(() => {
-        window.location.href = "P_Product.html";
+        window.location.href = "p_GestionCatalogo.php";
       }, 2000);
     } else {
       mostrarToast("Usuario o contraseña incorrecto", "error");

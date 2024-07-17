@@ -63,6 +63,8 @@
     color: var(--primary);
     cursor: pointer;
     overflow: hidden;
+    cursor: pointer;
+    position: relative;
 }
 
 .dropzone-area p {
@@ -139,4 +141,49 @@
     border: 1px solid;
     border-radius: 25px;
     font-size: 16px;
+}
+
+.toast {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #3498db;
+    color: #070000;
+    padding: 15px 25px;
+    border-radius: 8px;
+    display: none; /* Por defecto oculto */
+    z-index: 9999; /* Asegura que esté arriba de otros elementos */
+    font-size: 16px;
+    font-weight: 500;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.toast-icon {
+    margin-right: 10px; /* Espacio entre el icono y el mensaje */
+    font-size: 1.5rem; /* Tamaño del icono */
+}
+
+.toast.show {
+    display: flex; /* Mostrar cuando tiene la clase 'show' */
+    opacity: 1;
+    transform: translate(-50%, -50%);
+}
+
+.toast.hide {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(-20px);
+}
+
+.toast.success {
+    background-color: #85c1d3; /* Color verde para éxito */
+}
+
+.toast.error {
+    background-color: #834349; /* Color rojo para error */
+}
+
+.toast.info {
+    background-color: #434083; /* Color azul para información */
 }

@@ -44,6 +44,8 @@ networks:
     driver: bridge
 
 
+
 #cuando se ejecuta el docker compose se creeara una capeta con los nombres de base Datos y ProyectoFinal-IngenieriaII
 #en el archivo ProyectoFinal-IngenieriaII deben colocar la carpeta src para que se pueda ejecutar dentro del contenedor 
+# contraseña y usuario es root
 # contraseña y usuario es root
