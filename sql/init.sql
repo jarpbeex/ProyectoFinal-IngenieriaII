@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS Pedido (
     id_pedido VARCHAR(50) PRIMARY KEY,
     estado VARCHAR(20),
     fecha DATE,
+    cantidad INT,
     metodo_pago VARCHAR(20),
     fk_empleado VARCHAR(50),
     fk_cliente VARCHAR(50),
