@@ -20,52 +20,57 @@ document.querySelectorAll('button').forEach(button => {
                 .then( function(res) { return res.json() } )
                 .then( function(data) {
                     console.log(data);
-                    if (data.exists.includes('1')) {
-                        showNotification();
-                    } else{
-                        showNotificationEmailExists();
-                    }
+                    const correos = data.fk_cliente;
+                    const url = data.direccion_url;
+                    const fecha = data.fecha;
+                    const cantidad = data.cantidad;
+                    const metodoPago = data.metodo_pago;
+                    const idPed = data.id;
+                    // Mostrar información del artículo en el modal
+                    const modalContent = modalPedido.querySelector('.modal-content');
+                    modalContent.innerHTML = `
+                        <span class="close">&times;</span>
+                        <h2>Pedido</h2>
+                        <img src="${url}" alt="" style="width: 100%; height: auto; border-radius: 10px; margin-bottom: 20px;">
+                        <p>Correo de cliente: ${correos}</p>
+                        <p>Fecha: ${fecha}</p>
+                        <p>Cantidad a comprar: ${cantidad}</p>
+                        <select id="estadoAct">
+                            <option value="Pagado">Pagado</option>
+                            <option value="Entregado">Entregado</option>
+                        </select>
+                        <p>Metodo de pago: ${metodoPago}</p>
+                        <button id="submitActPedido">Confirmar Pedido</button>
+                    `;
+                    // Agregar evento para cerrar el modal
+                    const closeBtn = modalContent.querySelector('.close');
+                    closeBtn.addEventListener('click', function() {
+                        modalPedido.style.display = 'none';
+                    });
+
+                    const submitBtn = modalContent.querySelector('#submitActPedido');
+                    submitBtn.addEventListener('click', function() {
+                        console.log('funciona el boton submit');
+                        const datos2 = new FormData();
+                        const estado = modalContent.querySelector('#estadoAct').value;
+                        datos2.append('id', idPed)
+                        datos2.append('estado', estado)
+                        console.log(datos2)
+                        fetch ('http://localhost:9090/src/Server/actualizarPedido.php', { method: 'POST' , body:datos2 })
+                                .then( function(res) { return res.json() } )
+                                .then( function(data) {
+                                    console.log(data);
+                                    if (data.msg.includes('Pedido en proceso.')) {
+                                        showNotification();
+                                    }
+                                })
+                                .catch( error => { console.error('Hubo un error: ', error )});
+                    })
                 })
                 .catch( error => { console.error('Hubo un error', error) });
+        
 
-        // Mostrar información del artículo en el modal
-        const modalContent = modalPedido.querySelector('.modal-content');
-        modalContent.innerHTML = `
-            <span class="close">&times;</span>
-            <h2>Pedido</h2>
-            <input id="email" type="email" id="email" placeholder="Correo electrónico" required>
-            <select id="metodoPago">
-                <option value="Efectivo">Efectivo</option>
-                <option value="Yappy" selected>Yappy</option>
-            </select>
-            <input type="number" id="cantidad" min="1" max="5" step="1" value="1">
-            <p><button id="submitPedido">Confirmar Pedido</button></p>
-            
-        `;
 
-        // Agregar evento para cerrar el modal
-        const closeBtn = modalContent.querySelector('.close');
-        closeBtn.addEventListener('click', function() {
-            modalPedido.style.display = 'none';
-        });
-
+                
     });
 });
-
-// modalContent.innerHTML = `
-//             <span class="close">&times;</span>
-//             <h2>Pedido</h2>
-//             <img src="${imagenSrc}" alt="${articulo}" style="width: 100%; height: auto; border-radius: 10px; margin-bottom: 20px;">
-//             <p>Artículo seleccionado: ${articulo}</p>
-//             <p>Descripcion: ${Descripcion}</p>
-//             <p>Precio: ${precio}</p>
-//             <input id="email" type="email" id="email" placeholder="Correo electrónico" required>
-//             <select id="metodoPago">
-//                 <option value="Efectivo">Efectivo</option>
-//                 <option value="Yappy" selected>Yappy</option>
-//             </select>
-//             <input type="number" id="cantidad" min="1" max="5" step="1" value="1">
-//             <input type="hidden" value="${idAmig}" id="idAmiguru">
-//             <p><button id="submitPedido">Confirmar Pedido</button></p>
-            
-//         `;

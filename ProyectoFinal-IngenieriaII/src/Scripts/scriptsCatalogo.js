@@ -34,7 +34,7 @@ buttons.forEach(button => {
             </select>
             <input type="number" id="cantidad" min="1" max="5" step="1" value="1">
             <input type="hidden" value="${idAmig}" id="idAmiguru">
-            <p><button id="submitPedido">Confirmar Pedido</button></p>
+            <p><button id="submitPedido">Solicitar Pedido</button></p>
             
         `;
         // Agregar evento para cerrar el modal

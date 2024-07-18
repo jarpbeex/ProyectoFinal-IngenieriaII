@@ -27,3 +27,5 @@ Pantallas
     - http://localhost:9090/src/Pantallas/Vista_Administrador/p_Login.html
     - http://localhost:9090/src/Pantallas/Vista_Administrador/p_GestionCatalogo.php
     - http://localhost:9090/src/Pantallas/Vista_Administrador/p_Product.html
+
+Estado de los pedidos: PENDIENTE, PAGADO, ENTREGADO.
