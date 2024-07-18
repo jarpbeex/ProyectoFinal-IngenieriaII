@@ -45,6 +45,7 @@ CREATE TABLE Pedido (
     id_pedido INT AUTO_INCREMENT PRIMARY KEY,
     estado VARCHAR(20),
     fecha DATE,
+    cantidad INT,
     metodo_pago VARCHAR(20),
     fk_empleado INT,
     fk_cliente VARCHAR(50),
