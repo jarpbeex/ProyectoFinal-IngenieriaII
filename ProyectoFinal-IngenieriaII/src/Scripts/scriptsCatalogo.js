@@ -1,96 +1,166 @@
 // Obtener todos los botones de "Realizar Pedido"
 const buttons = document.querySelectorAll('button');
+
+function mostrarToast(mensaje, tipo) {
+    const toast = document.getElementById('toast-notification');
+    const toastMessage = toast.querySelector('.toast-message');
+    const toastIcon = toast.querySelector('.toast-icon');
+
+    // Configura los estilos basados en el tipo de mensaje
+    toast.classList.remove('success', 'error', 'info'); // Limpia todas las clases de tipo
+    toastIcon.textContent = ''; // Limpia el icono
+
+    if (tipo === "success") {
+        toast.classList.add('success');
+        toastIcon.textContent = "✔️";
+    } else if (tipo === "error") {
+        toast.classList.add('error');
+        toastIcon.textContent = "❌";
+    } else if (tipo === "info") {
+        toast.classList.add('info');
+        toastIcon.textContent = "ℹ️";
+    }
+
+    toastMessage.textContent = mensaje;
+    toast.classList.add('show');
+
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 3000); // Duración de la notificación
+}
+
 // Iterar sobre cada botón y agregar un evento clic
 buttons.forEach(button => {
     button.addEventListener('click', function() {
         // Obtener información del artículo
-        console.log("Entrado en scrip");
-
-        // Se definen todos los datos para la ventana emergente.
         const article = this.closest('article');
         const articulo = article.querySelector('h2').textContent;
-        const Descripcion = article.querySelector('p').textContent;
+        const descripcion = article.querySelector('p').textContent;
         const precio = article.querySelector('h4').textContent;
         const imagenSrc = article.querySelector('img').src;
         const idAmig = article.querySelector('input').value;
 
-        // Mostrar el modal de catálogo
-        const modalCatalogo = document.getElementById('modal-catalogo');
-        modalCatalogo.style.display = 'block';
+        // Almacenar información en local storage
+        localStorage.setItem('pedido', JSON.stringify({
+            articulo: articulo,
+            descripcion: descripcion,
+            precio: precio,
+            imagenSrc: imagenSrc,
+            idAmig: idAmig
+        }));
 
-        // Mostrar información del artículo en el modal
-        const modalContent = modalCatalogo.querySelector('.modal-content');
-        modalContent.innerHTML = `
-            <span class="close">&times;</span>
-            <h2>Pedido</h2>
-            <img src="${imagenSrc}" alt="${articulo}" style="width: 100%; height: auto; border-radius: 10px; margin-bottom: 20px;">
-            <p>Artículo seleccionado: ${articulo}</p>
-            <p>Descripcion: ${Descripcion}</p>
-            <p>Precio: ${precio}</p>
-            <input id="email" type="email" id="email" placeholder="Correo electrónico" required>
-            <select id="metodoPago">
-                <option value="Efectivo">Efectivo</option>
-                <option value="Yappy" selected>Yappy</option>
-            </select>
-            <input type="number" id="cantidad" min="1" max="5" step="1" value="1">
-            <input type="hidden" value="${idAmig}" id="idAmiguru">
-            <p><button id="submitPedido">Solicitar Pedido</button></p>
-            
-        `;
-        // Agregar evento para cerrar el modal
-        const closeBtn = modalContent.querySelector('.close');
-        closeBtn.addEventListener('click', function() {
-            modalCatalogo.style.display = 'none';
-        });
-
-        const submitBtn = modalContent.querySelector('#submitPedido');
-
-        submitBtn.addEventListener('click', function() {
-            console.log('El click funciona');
-            
-            // Guardar información del artículo en el modal para envío
-            const inputCorreo = modalContent.querySelector('#email').value; // <--- no funciona :(
-            const metodoPago = modalContent.querySelector('#metodoPago').value;
-            const inCantidad = modalContent.querySelector('#cantidad').value;
-            const id = modalContent.querySelector('#idAmiguru').value;
-
-            console.log(inputCorreo);
-            console.log(metodoPago);
-            console.log(inCantidad);
-            console.log(idAmig);
-
-            const datos = new FormData();
-            datos.append('correo', inputCorreo);
-            datos.append('id', idAmig) // id amigurumi
-            datos.append('pago', metodoPago);
-            datos.append('cantidad', inCantidad);
-
-            // prueba........
-            console.log(datos);
-
-            fetch ('http://localhost:9090/src/Server/Pedido.php', { method: 'POST', body: datos })
-                    .then( function(res) { return res.json() } )
-                    .then( function(data) {
-                        console.log(data);
-                        if (data.msg.includes('Pedido en proceso.')) {
-                            showNotification();
-                        } else{
-                            showNotificationEmailExists();
-                        }
-                    })
-                    .catch( error => { console.error('Hubo un error', error) });
-
-
-
-
-
-            // const email = modalContent.querySelector('#email').value;
-
-            // Aquí puedes procesar la información del pedido
-            // Por ejemplo, enviar los datos por AJAX a tu servidor
-
-            // Cerrar el modal después de enviar el pedido
-            // modalCatalogo.style.display = 'none';
-        });
+        // Redirigir a la página P_Registro_Pedido.html
+        window.location.href = 'P_Registro_Pedido.html';
     });
 });
+
+// Código para P_Registro_Pedido.html
+document.addEventListener('DOMContentLoaded', function() {
+    const pedido = JSON.parse(localStorage.getItem('pedido'));
+
+    // Verificar si hay un pedido guardado en localStorage
+    if (pedido) {
+        // Mostrar los detalles del pedido en la página de pedido
+        document.getElementById('modal-img').src = pedido.imagenSrc;
+        document.getElementById('modal-articulo').textContent += pedido.articulo;
+        document.getElementById('modal-descripcion').textContent += pedido.descripcion;
+        document.getElementById('modal-precio').textContent += pedido.precio;
+        document.getElementById('idAmiguru').value = pedido.idAmig;
+    } else {
+        // Si no hay pedido en localStorage y estamos en la página de pedido
+        if (window.location.pathname.includes('P_Registro_Pedido.html') && !sessionStorage.getItem('redirigido')) {
+            sessionStorage.setItem('redirigido', 'true');
+            window.location.href = 'p_Catalogo.php';
+        }
+    }
+
+    // Limpiar el indicador de redirección en caso de volver a la página de catálogo
+    if (window.location.pathname.includes('p_Catalogo.php')) {
+        sessionStorage.removeItem('redirigido');
+    }
+
+    // Agregar evento para el botón de confirmar pedido
+    document.getElementById('submitPedido').addEventListener('click', function() {
+        const email = document.getElementById('email').value;
+        const metodoPago = document.getElementById('metodoPago').value;
+        const cantidad = document.getElementById('cantidad').value;
+        const idAmig = document.getElementById('idAmiguru').value;
+
+        const datos = new FormData();
+        datos.append('correo', email);
+        datos.append('id', idAmig);
+        datos.append('pago', metodoPago);
+        datos.append('cantidad', cantidad);
+        Swal.fire({
+            title: 'Realizar Peticion de Pedido',
+            text: "Los pedidos realizados tardarán un plazo de 2 dias en confirmarse, recibirá un correo con la información para su pago y retiro",
+            icon: 'warning',
+            background: '#e0f7fa', // Fondo azul suave
+            showCancelButton: true,
+            confirmButtonColor: '#4caf50', // Verde agradable
+            cancelButtonColor: '#8b2727', // Blanco suave
+            confirmButtonText: 'Realizar pedido',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch('http://localhost:9090/src/Server/Pedido.php', { 
+                    method: 'POST', 
+                    body: datos 
+                })
+                .then(res => res.json())
+                .then(data => {
+                console.log(data);
+                    if (data.msg.includes('Pedido en proceso.')) {
+                        mostrarToast("Pedido realizado.", "success");
+                        setTimeout(() => {
+                            window.location.href = '../Pantallas/p_Catalogo.php';
+                        }, 1500);
+                    } else {
+                        if (data.msg.includes('El correo electronico no esta registrado, Registrese antes de poder hacer un pedido.')) {
+                            mostrarToast(data.msg, "error");
+                            setTimeout(() => {
+                                window.location.href = '../Pantallas/p_Catalogo.php';
+                            }, 3200);
+                        }else{
+                            mostrarToast(data.msg, "error");
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Hubo un error', error);
+                    mostrarToast("Error al conectar con el servidor. Intente de nuevo más tarde.", "error");
+                });
+            }
+        });
+    });
+
+    // Funciones para mostrar notificaciones
+    function showNotification() {
+        const notification = document.getElementById('notification');
+        notification.style.display = 'block';
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 3000);
+    }
+
+    function showNotificationEmailExists() {
+        const notification = document.getElementById('notificationEmailExists');
+        notification.style.display = 'block';
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 3000);
+    }
+
+    // Evento clic para el botón de cerrar pedido
+    document.getElementById('closePedido').addEventListener('click', function() {
+        localStorage.removeItem('pedido');
+        window.location.href = 'p_Catalogo.php';
+    });
+
+    // Evento antes de recargar la página
+    window.addEventListener('beforeunload', function() {
+        localStorage.removeItem('pedido');
+    });
+});
+
+

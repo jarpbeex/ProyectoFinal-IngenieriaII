@@ -32,6 +32,6 @@ function Entrar(event) {
   
     setTimeout(() => {
       toast.classList.remove('show');
-    }, 3000);
+    }, 1500);
   }
   

@@ -1,5 +1,3 @@
-// modalScripts.js
-
 // Abre el modal de registro de correo electrónico
 document.getElementById('registerUserLink').onclick = function() {
     document.getElementById('registerEmailModal').style.display = "block";
@@ -19,53 +17,46 @@ window.onclick = function(event) {
     }
 };
 
-
-// Envía el formulario de registro de correo electrónico y muestra el modal de información adicional si es necesario
+// Envía el formulario de registro de correo electrónico y muestra el modal de información adicional
 document.getElementById('registerEmailForm').onsubmit = function(event) {
     event.preventDefault();
     const email = document.getElementById('email').value;
 
-    // Verificar si el correo existe en la base de datos
+    // Almacenar el correo en localStorage
+    localStorage.setItem('email', email);
+
+    // Mostrar modal de registro de información adicional
+    document.getElementById('registerEmailModal').style.display = "none";
+    document.getElementById('registerAdditionalInfoModal').style.display = "block";
+};
+
+// Envía el formulario de registro de información adicional y realiza la verificación del correo electrónico
+document.getElementById('registerAdditionalInfoForm').onsubmit = function(event) {
+    event.preventDefault();
+
+    // Obtener el correo electrónico almacenado
+    const email = localStorage.getItem('email');
+    if (!email) {
+        alert("Error: el correo electrónico no se encuentra.");
+        return;
+    }
+
+    // Añadir el correo electrónico a los datos del formulario
+    const formData = $("#registerAdditionalInfoForm").serializeArray();
+    formData.push({ name: 'email', value: email });
+
     $.ajax({
         type: "POST",
-        url: "../Server/Usuario.php", // este archivo verifica y guarda en caso de no existir el correo
-        data: { email: email },
+        url: "../Server/Usuario.php",
+        data: $.param(formData),
         dataType: 'json',
         success: function(response) {
             if (response.exists) {
-                // Mostrar notificación de correo existente
                 showNotificationEmailExists();
+            } else if (response.success) {
+                showNotification();
             } else {
-                // Mostrar modal de registro de información adicional
-                document.getElementById('registerEmailModal').style.display = "none";
-                document.getElementById('registerAdditionalInfoModal').style.display = "block";
-
-                // Envía el formulario de registro de información adicional y muestra la notificación
-                document.getElementById('registerAdditionalInfoForm').onsubmit = function(event) {
-                    event.preventDefault();
-
-                    // Añadir el correo electrónico a los datos del formulario
-                    const formData = $("#registerAdditionalInfoForm").serializeArray();
-                    formData.push({ name: 'email', value: email });
-
-                    $.ajax({
-                        type: "POST",
-                        url: "../Server/Usuario.php",
-                        data: $.param(formData),
-                        dataType: 'json',
-                        success: function(response) {
-                            if (response.success) {
-                                showNotification();
-                            } else {
-                                console.log("Respuesta inesperada del servidor:", response);
-                            }
-                        },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            console.error("Error en la solicitud AJAX:", textStatus, errorThrown);
-                            alert("Error al conectar con el servidor. Intente de nuevo más tarde.");
-                        }
-                    });
-                };
+                console.log("Respuesta inesperada del servidor:", response);
             }
         },
         error: function(jqXHR, textStatus, errorThrown) {
@@ -74,8 +65,3 @@ document.getElementById('registerEmailForm').onsubmit = function(event) {
         }
     });
 };
-
-
-
-
-

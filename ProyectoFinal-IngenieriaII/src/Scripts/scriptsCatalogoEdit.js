@@ -41,6 +41,6 @@ buttons.forEach(button => {
         }));
 
         // Redirigir a p_Product.html
-        window.location.href = 'p_Product.html';
+        window.location.href = 'P_Producto.html';
     });
 });

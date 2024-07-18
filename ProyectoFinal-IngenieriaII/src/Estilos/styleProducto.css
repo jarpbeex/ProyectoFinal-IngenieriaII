@@ -181,7 +181,7 @@
 }
 
 .toast.error {
-    background-color: #834349; /* Color rojo para error */
+    background-color: #ff9187; /* Color rojo para error */
 }
 
 .toast.info {

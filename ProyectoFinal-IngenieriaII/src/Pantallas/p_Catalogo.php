@@ -9,7 +9,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../Estilos/stylesIndex.css">
-    <link rel="stylesheet" href="../Estilos/stylesModal.css">
+    <link rel="stylesheet" href="../Estilos/stylesModal.css?v=1.1">
     <link rel="stylesheet" href="../Estilos/stylesNotificacion.css">
     <link rel="stylesheet" href="../Estilos/stylesCatalogo.css">
 </head>
@@ -86,7 +86,7 @@
             require __DIR__ . '/../Server/DB_Puerto.php';
             try {
                 // Consulta para obtener los productos
-                $sql = "SELECT * FROM inventario_de_amigurumis";
+                $sql = "SELECT * FROM inventario_de_amigurumis WHERE cantidad_disponible > 0";
                 $stmt = $conn->query($sql);
 
                 if ($stmt->rowCount() > 0) {
@@ -149,7 +149,7 @@
     </footer>
 
     <script src="../Scripts/scriptsIndex.js"></script>
-    <script src="../Scripts/scriptsModal.js?v=1.1"></script>
+    <script src="../Scripts/scriptsModal.js?v=1.2"></script>
     <script src="../Scripts/scriptsNotificacion.js?v=1.1"></script>
     <script src="../Scripts/scriptsCatalogo.js?v=1.1"></script>
 </body>

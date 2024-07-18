@@ -1,37 +1,45 @@
 <?php
 require 'DB_Puerto.php';
 
-$usuario = trim($_POST['email']); 
-$sql = "SELECT * FROM Cliente WHERE id_correo = '$usuario'";
-$stmt = $conn->query($sql);
-
 $response = array();
 
-if ($stmt->rowCount() > 0) {
-    $response['exists'] = true;
-} else {
-    $response['exists'] = false;
-
-    // Insertar el correo en la base de datos
-    $sqlInsert = "INSERT INTO Cliente (id_correo) VALUES ('$usuario')";
-    $conn->query($sqlInsert);
-}
-
-// Verificar si se ha enviado información adicional
-if (isset($_POST['firstName']) && isset($_POST['lastName']) && isset($_POST['phoneNumber'])) {
+if (isset($_POST['firstName']) && isset($_POST['lastName']) && isset($_POST['phoneNumber']) && isset($_POST['email'])) {
+    $usuario = trim($_POST['email']); 
     $firstName = trim($_POST['firstName']);
     $lastName = trim($_POST['lastName']);
     $phoneNumber = trim($_POST['phoneNumber']);
+    
+    // Consulta para verificar si existe el cliente
+    $sql = "SELECT * FROM Cliente WHERE id_correo = :email";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':email', $usuario);
+    $stmt->execute();
 
-    // Actualizar el registro con la información adicional
-    $sqlUpdate = "UPDATE Cliente SET nombre = '$firstName', apellido = '$lastName', telefono = '$phoneNumber' WHERE id_correo = '$usuario'";
-    if ($conn->query($sqlUpdate)) {
-        $response['success'] = true;
+    if ($stmt->rowCount() > 0) {
+        // El correo ya existe
+        $response['exists'] = true;
     } else {
-        $response['success'] = false;
+        // Insertar el nuevo cliente
+        $sqlInsert = "INSERT INTO Cliente (id_correo, nombre, apellido, telefono) VALUES (:email, :firstName, :lastName, :phoneNumber)";
+        $stmtInsert = $conn->prepare($sqlInsert);
+        $stmtInsert->bindParam(':email', $usuario);
+        $stmtInsert->bindParam(':firstName', $firstName);
+        $stmtInsert->bindParam(':lastName', $lastName);
+        $stmtInsert->bindParam(':phoneNumber', $phoneNumber);
+        
+        if ($stmtInsert->execute()) {
+            // Inserción exitosa
+            $response['success'] = true;
+        } else {
+            // Error en la inserción
+            $response['success'] = false;
+        }
     }
+} else {
+    $response['error'] = 'Datos incompletos';
 }
 
 header('Content-Type: application/json');
 echo json_encode($response);
 ?>
+

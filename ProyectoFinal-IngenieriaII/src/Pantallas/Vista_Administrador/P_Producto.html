@@ -19,7 +19,7 @@
         </div>
         <ul>
             <li><a href="p_GestionCatalogo.php">Catálogo</a></li>
-            <li><a href="p_Product.html">Añadir Producto</a></li>
+            <li><a href="p_Producto.html">Añadir Producto</a></li>
             <li><a href="p_pedidos.php">Pedidos</a></li>
         </ul>
         
@@ -161,7 +161,7 @@
                             if (response.success) {
                                 mostrarToast("Cambios guardados correctamente.", "success");
                                 setTimeout(() => {
-                                    window.location.href = 'catalogo.php';
+                                    window.location.href = 'p_GestionCatalogo.php';
                                 }, 1500);
                             } else {
                                 console.log("Respuesta inesperada del servidor:", response); //Consola
@@ -205,7 +205,7 @@
                             if (response.success) {
                                 mostrarToast("Producto eliminado del catálogo.", "success");
                                 setTimeout(() => {
-                                    window.location.href = 'catalogo.php';
+                                    window.location.href = 'p_GestionCatalogo.php';
                                 }, 1500);
                             } else {
                                 console.log("Respuesta inesperada del servidor:", response);
