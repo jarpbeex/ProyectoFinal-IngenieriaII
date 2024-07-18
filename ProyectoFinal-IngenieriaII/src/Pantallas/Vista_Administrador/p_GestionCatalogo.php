@@ -35,7 +35,7 @@
         <ul>
             <li><a href="p_Gestioncatalogo.php">Catalogo</a></li>
             <li><a href="P_Product.html">Añadir Producto</a></li>
-            <li><a href="">Pedidos</a></li>
+            <li><a href="p_pedidos.php">Pedidos</a></li>
         </ul>
     </nav>
 

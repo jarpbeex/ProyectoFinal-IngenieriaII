@@ -23,33 +23,33 @@ CREATE TABLE Cliente (
     FOREIGN KEY (fk_amigurumis) REFERENCES Inventario_de_amigurumis(id_amigurumis)
 );
 
-CREATE TABLE Inventario_materiales (
-    id_materiales VARCHAR(50) PRIMARY KEY,
-    descripcion VARCHAR(50),
-    cantidad INT,
-    proveedor VARCHAR(50)
-);
+-- CREATE TABLE Inventario_materiales (
+--     id_materiales VARCHAR(50) PRIMARY KEY,
+--     descripcion VARCHAR(50),
+--     cantidad INT,
+--     proveedor VARCHAR(50)
+-- );
 
 CREATE TABLE Empleado (
-    id_empleado VARCHAR(50) PRIMARY KEY,
+    id_empleado INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50),
     apellido VARCHAR(50),
     correo VARCHAR(50),
     fk_amigurumis VARCHAR(50),
-    fk_materiales VARCHAR(50),
-    FOREIGN KEY (fk_amigurumis) REFERENCES Inventario_de_amigurumis(id_amigurumis),
-    FOREIGN KEY (fk_materiales) REFERENCES Inventario_materiales(id_materiales)
+    FOREIGN KEY (fk_amigurumis) REFERENCES Inventario_de_amigurumis(id_amigurumis)
+    -- fk_materiales VARCHAR(50),
+    -- FOREIGN KEY (fk_materiales) REFERENCES Inventario_materiales(id_materiales)
 );
 
 CREATE TABLE Pedido (
-    id_pedido VARCHAR(50) PRIMARY KEY,
+    id_pedido INT AUTO_INCREMENT PRIMARY KEY,
     estado VARCHAR(20),
     fecha DATE,
     metodo_pago VARCHAR(20),
-    fk_empleado VARCHAR(50),
+    fk_empleado INT,
     fk_cliente VARCHAR(50),
     FOREIGN KEY (fk_empleado) REFERENCES Empleado(id_empleado),
     FOREIGN KEY (fk_cliente) REFERENCES Cliente(id_correo)
 );
 
-
+INSERT INTO `Empleado` (`nombre`, `apellido`, `correo`, `fk_amigurumis`) VALUES ('Chirag', 'Ahir', 'chirag@upt.com', 'MU9732');

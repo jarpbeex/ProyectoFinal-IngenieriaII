@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +13,7 @@
     <link rel="stylesheet" href="../Estilos/stylesNotificacion.css">
     <link rel="stylesheet" href="../Estilos/stylesCatalogo.css">
 </head>
+
 <body>
     <!-- Barra de navegación -->
     <nav>
@@ -42,22 +44,22 @@
     </div>
 
     <!-- Modal de registro de información adicional -->
-<div id="registerAdditionalInfoModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Registro de Información Adicional</h2>
-        <form id="registerAdditionalInfoForm">
-            <!-- Agregar campos adicionales según necesidad -->
-            <label for="firstName">Nombre:</label>
-            <input type="text" id="firstName" name="firstName" required>
-            <label for="lastName">Apellido:</label>
-            <input type="text" id="lastName" name="lastName" required>
-            <label for="phoneNumber">Número de Teléfono:</label>
-            <input type="tel" id="phoneNumber" name="phoneNumber" required>
-            <button type="submit">Registrar</button>
-        </form>
+    <div id="registerAdditionalInfoModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Registro de Información Adicional</h2>
+            <form id="registerAdditionalInfoForm">
+                <!-- Agregar campos adicionales según necesidad -->
+                <label for="firstName">Nombre:</label>
+                <input type="text" id="firstName" name="firstName" required>
+                <label for="lastName">Apellido:</label>
+                <input type="text" id="lastName" name="lastName" required>
+                <label for="phoneNumber">Número de Teléfono:</label>
+                <input type="tel" id="phoneNumber" name="phoneNumber" required>
+                <button type="submit">Registrar</button>
+            </form>
+        </div>
     </div>
-</div>
 
     <!-- Notificación de registro exitoso -->
     <div id="notification" class="notification">
@@ -73,13 +75,13 @@
             <i class="fa fa-exclamation-circle"></i>
             <p>El correo electrónico ya está registrado</p>
         </div>
-    </div>   
+    </div>
 
     <!-- Catálogo de productos -->
     <main>
         <h1>Mugumis Disponibles</h1>
         <section>
-        <?php
+            <?php
             // Incluir el archivo de conexión
             require __DIR__ . '/../Server/DB_Puerto.php';
             try {
@@ -99,14 +101,14 @@
                         echo '<button id="Comprar">' . 'Realizar Pedido</button>';
                         echo '<p>' . htmlspecialchars($row["cantidad_disponible"]) . ' Disponibles</p>';
                         echo '</article>';
-                    }                    
+                    }
                 } else {
                     echo 'No hay productos disponibles.';
                 }
             } catch (PDOException $e) {
                 echo "Error de consulta: " . $e->getMessage();
             }
-        ?>
+            ?>
         </section>
     </main>
 
@@ -122,7 +124,7 @@
         <div class="footer-container">
             <div class="footer-column">
                 <h3>Sobre Nosotros</h3>
-                <p>La empresa opera como un negocio independiente, ofreciendo productos de calidad artesanal 
+                <p>La empresa opera como un negocio independiente, ofreciendo productos de calidad artesanal
                     tanto a través de pedidos personalizados como de diseños básicos que son expuestos y vendidos.</p>
             </div>
             <div class="footer-column">
@@ -151,4 +153,5 @@
     <script src="../Scripts/scriptsNotificacion.js?v=1.1"></script>
     <script src="../Scripts/scriptsCatalogo.js?v=1.1"></script>
 </body>
+
 </html>
