@@ -15,7 +15,7 @@ try {
         // Consulta para verificar si existe el cliente
         $sql = "SELECT * FROM Cliente WHERE id_correo = :correo";
         $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':correo', $cliente);
+        $stmt->bindParam(':correo', $cliente, PDO::PARAM_STR);
         $stmt->execute();
 
         // Guarda fk_amigurumis
@@ -27,33 +27,53 @@ try {
 
             // Try-Catch en caso de errores al realizar la consulta
             try {
-                // Si el cliente no tiene amigurumi asignado, se le asigna
-                if (is_null($fkAmig)) {
-                    // Consulta para actualizar la fk_amigurumis
-                    $sqlid = "UPDATE Cliente SET fk_amigurumis = :idAmig WHERE id_correo = :correo";
-                    $stmtid = $conn->prepare($sqlid);
-                    $stmtid->bindParam(':idAmig', $idAmig);
-                    $stmtid->bindParam(':correo', $cliente);
-                    $stmtid->execute();
+                // Verificar la cantidad disponible del amigurumi
+                $sqlCantidad = "SELECT cantidad_disponible FROM inventario_de_amigurumis WHERE id_amigurumis = :idAmig";
+                $stmtCantidad = $conn->prepare($sqlCantidad);
+                $stmtCantidad->bindParam(':idAmig', $idAmig, PDO::PARAM_STR);
+                $stmtCantidad->execute();
+                $filaCantidad = $stmtCantidad->fetch(PDO::FETCH_ASSOC);
+
+                if ($filaCantidad && $filaCantidad['cantidad_disponible'] >= $cantidad) {
+                    // Si el cliente no tiene amigurumi asignado, se le asigna
+                    if (is_null($fkAmig)) {
+                        // Consulta para actualizar la fk_amigurumis
+                        $sqlid = "UPDATE Cliente SET fk_amigurumis = :idAmig WHERE id_correo = :correo";
+                        $stmtid = $conn->prepare($sqlid);
+                        $stmtid->bindParam(':idAmig', $idAmig, PDO::PARAM_STR);
+                        $stmtid->bindParam(':correo', $cliente, PDO::PARAM_STR);
+                        $stmtid->execute();
+                    }
+
+                    // Valor por defecto en metodo_pago
+                    $estado = 'Pendiente';
+
+                    // Preparar la consulta SQL con parámetros
+                    $sql = "INSERT INTO Pedido (estado, fecha, metodo_pago, cantidad, fk_cliente) 
+                            VALUES (:estado, CURDATE(), :metodo_pago, :cantidad, :fk_cliente)";
+                    $stmt = $conn->prepare($sql);
+
+                    // Vincular los parámetros a los valores
+                    $stmt->bindParam(':estado', $estado, PDO::PARAM_STR);
+                    $stmt->bindParam(':metodo_pago', $metodo_pago, PDO::PARAM_STR);
+                    $stmt->bindParam(':fk_cliente', $cliente, PDO::PARAM_STR);
+                    $stmt->bindParam(':cantidad', $cantidad, PDO::PARAM_INT);
+
+                    // Ejecutar la consulta
+                    $stmt->execute();
+
+                    // Restar la cantidad comprada del inventario
+                    $nuevaCantidad = $filaCantidad['cantidad_disponible'] - $cantidad;
+                    $sqlActualizarCantidad = "UPDATE inventario_de_amigurumis SET cantidad_disponible = :nuevaCantidad WHERE id_amigurumis = :idAmig";
+                    $stmtActualizarCantidad = $conn->prepare($sqlActualizarCantidad);
+                    $stmtActualizarCantidad->bindParam(':nuevaCantidad', $nuevaCantidad, PDO::PARAM_INT);
+                    $stmtActualizarCantidad->bindParam(':idAmig', $idAmig, PDO::PARAM_STR);
+                    $stmtActualizarCantidad->execute();
+
+                    $response['msg'] = 'Pedido en proceso.';
+                } else {
+                    $response['msg'] = 'No hay suficiente cantidad del producto.';
                 }
-
-                // Valor por defecto en metodo_pago
-                $estado = 'Pendiente';
-
-                // Preparar la consulta SQL con parámetros
-                $sql = "INSERT INTO Pedido (estado, fecha, metodo_pago, cantidad, fk_cliente) 
-                        VALUES (:estado, CURDATE(), :metodo_pago, :cantidad, :fk_cliente)";
-                $stmt = $conn->prepare($sql);
-
-                // Vincular los parámetros a los valores
-                $stmt->bindParam(':estado', $estado, PDO::PARAM_STR);
-                $stmt->bindParam(':metodo_pago', $metodo_pago, PDO::PARAM_STR);
-                $stmt->bindParam(':fk_cliente', $cliente, PDO::PARAM_STR);
-                $stmt->bindParam(':cantidad', $cantidad, PDO::PARAM_INT);
-
-                // Ejecutar la consulta
-                $stmt->execute();
-                $response['msg'] = 'Pedido en proceso.';
                 echo json_encode($response);
 
             } catch (PDOException $e) {
@@ -63,7 +83,7 @@ try {
             }
 
         } else { // Si no existe el cliente
-            $response['msg'] = 'El correo electronico no esta registrado, Registrese antes de poder hacer un pedido.';
+            $response['msg'] = 'El correo electrónico no está registrado. Regístrese antes de poder hacer un pedido.';
             echo json_encode($response);
         }
 
