@@ -22,7 +22,6 @@
             <li><a href="p_Producto.html">Añadir Producto</a></li>
             <li><a href="p_pedidos.php">Pedidos</a></li>
         </ul>
-        
     </nav>
 
     <!-- para Agregar Amigurumis -->
@@ -37,7 +36,7 @@
                     <p>Imagen del producto</p>
                     <p>+</p>
                     <button type="button" id="open-gallery"></button>
-                    <!-- En lugar de input file -->  
+                    <!-- En lugar de input file -->
                 </div>
                 <input type="hidden" id="image-url" name="image-url">
                 <input type="hidden" id="Id" name="Id">
@@ -71,16 +70,64 @@
         <span class="toast-message"></span>
     </div>
 
-    <!-- ?v=N.n al final de un script ayuda a que el navegador actualize cambios realizados subir la cifra por cada cambio importante(1.1 - 1.2... 1.9 - 2.0...N.n) -->
     <script>
+        class Product {
+            constructor(builder) {
+                this.imageUrl = builder.imageUrl;
+                this.id = builder.id;
+                this.name = builder.name;
+                this.price = builder.price;
+                this.description = builder.description;
+                this.quantity = builder.quantity;
+            }
+
+            static get Builder() {
+                class Builder {
+                    setImageUrl(imageUrl) {
+                        this.imageUrl = imageUrl;
+                        return this;
+                    }
+
+                    setId(id) {
+                        this.id = id;
+                        return this;
+                    }
+
+                    setName(name) {
+                        this.name = name;
+                        return this;
+                    }
+
+                    setPrice(price) {
+                        this.price = price;
+                        return this;
+                    }
+
+                    setDescription(description) {
+                        this.description = description;
+                        return this;
+                    }
+
+                    setQuantity(quantity) {
+                        this.quantity = quantity;
+                        return this;
+                    }
+
+                    build() {
+                        return new Product(this);
+                    }
+                }
+                return Builder;
+            }
+        }
+
         function mostrarToast(mensaje, tipo) {
             const toast = document.getElementById('toast-notification');
             const toastMessage = toast.querySelector('.toast-message');
             const toastIcon = toast.querySelector('.toast-icon');
 
-            // Configura los estilos basados en el tipo de mensaje
-            toast.classList.remove('success', 'error', 'info'); // Limpia todas las clases de tipo
-            toastIcon.textContent = ''; // Limpia el icono
+            toast.classList.remove('success', 'error', 'info');
+            toastIcon.textContent = '';
 
             if (tipo === "success") {
                 toast.classList.add('success');
@@ -98,18 +145,17 @@
 
             setTimeout(() => {
                 toast.classList.remove('show');
-            }, 3000); // Duración de la notificación
+            }, 3000);
         }
-  
+
         function setupGalleryButton() {
             const galleryButton = document.getElementById('open-gallery');
             const dropzoneArea = document.getElementById('dropzone-area');
-            
-            // Asegúrate de que tanto galleryButton como dropzoneArea estén definidos
+
             if (galleryButton) {
                 galleryButton.addEventListener('click', openGallery);
             }
-            
+
             if (dropzoneArea) {
                 dropzoneArea.addEventListener('click', openGallery);
             }
@@ -119,44 +165,53 @@
             const galleryWindow = window.open('https://raularica.github.io/Index.html', 'Galería', 'width=800,height=600');
 
             window.addEventListener('message', function(event) {
-                console.log(`Message received from: ${event.origin}`); // Depuración
-                console.log(`Message data: ${event.data}`); // Depuración
                 const selectedImageUrl = event.data;
 
-                // Actualiza el contenido del dropzone-area con la nueva imagen
                 document.getElementById('dropzone-area').innerHTML = `
                     <img src="${selectedImageUrl}" alt="Preview">
                 `;
-
-                // Actualiza el valor del input hidden con la URL de la imagen
                 document.getElementById('image-url').value = selectedImageUrl;
-
-                // Reconfigura el botón de la galería
                 setupGalleryButton();
             }, { once: true });
         }
 
         document.getElementById('submit-button').addEventListener('click', function() {
+            const product = new Product.Builder()
+                .setImageUrl(document.getElementById('image-url').value)
+                .setId(document.getElementById('Id').value)
+                .setName(document.getElementById('Name').value)
+                .setPrice(document.getElementById('Priece').value)
+                .setDescription(document.getElementById('Descripcion').value)
+                .setQuantity(document.getElementById('Cantidad').value)
+                .build();
+
             Swal.fire({
-            title: '¿Estás seguro?',
-            text: "¿Estás seguro de que deseas guardar los cambios?",
-            iconHtml: '<i class="fas fa-save"></i>',
-            customClass: {
-                icon: 'swal2-icon-custom'
-            },
-            background: '#e0f7fa', // Fondo azul suave
-            showCancelButton: true,
-            confirmButtonColor: '#4caf50', // Verde agradable
-            cancelButtonColor: '#8b2727', // Blanco suave
-            confirmButtonText: 'Sí, guardar cambios',
-            cancelButtonText: 'Cancelar'
+                title: '¿Estás seguro?',
+                text: "¿Estás seguro de que deseas guardar los cambios?",
+                iconHtml: '<i class="fas fa-save"></i>',
+                customClass: {
+                    icon: 'swal2-icon-custom'
+                },
+                background: '#e0f7fa',
+                showCancelButton: true,
+                confirmButtonColor: '#4caf50',
+                cancelButtonColor: '#8b2727',
+                confirmButtonText: 'Sí, guardar cambios',
+                cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
                         type: "POST",
                         url: "/src/Server/Producto.php",
-                        data: $("#dropzone-box").serialize(),
-                        dataType: 'json', // Cambiado a 'json' para manejar la respuesta JSON
+                        data: {
+                            "image-url": product.imageUrl,
+                            "Id": product.id,
+                            "Name": product.name,
+                            "Priece": product.price,
+                            "Descripcion": product.description,
+                            "Cantidad": product.quantity
+                        },
+                        dataType: 'json',
                         success: function(response) {
                             if (response.success) {
                                 mostrarToast("Cambios guardados correctamente.", "success");
@@ -164,12 +219,10 @@
                                     window.location.href = 'p_GestionCatalogo.php';
                                 }, 1500);
                             } else {
-                                console.log("Respuesta inesperada del servidor:", response); //Consola
                                 mostrarToast("Ocurrió un problema.", "error");
                             }
                         },
                         error: function(jqXHR, textStatus, errorThrown) {
-                            console.error("Error en la solicitud AJAX:", textStatus, errorThrown); //consola
                             mostrarToast("Error al conectar con el servidor. Intente de nuevo más tarde.", "error");
                         }
                     });
@@ -179,15 +232,15 @@
 
         document.getElementById('Delete').addEventListener('click', function() {
             Swal.fire({
-            title: 'Eliminar producto',
-            text: "¿Estás seguro de que deseas eliminar este producto?",
-            icon: 'warning',
-            background: '#e0f7fa', // Fondo azul suave
-            showCancelButton: true,
-            confirmButtonColor: '#4caf50', // Verde agradable
-            cancelButtonColor: '#8b2727', // Blanco suave
-            confirmButtonText: 'Sí, Eliminar',
-            cancelButtonText: 'Cancelar'
+                title: 'Eliminar producto',
+                text: "¿Estás seguro de que deseas eliminar este producto?",
+                icon: 'warning',
+                background: '#e0f7fa',
+                showCancelButton: true,
+                confirmButtonColor: '#4caf50',
+                cancelButtonColor: '#8b2727',
+                confirmButtonText: 'Sí, Eliminar',
+                cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
                     const idAmigurumis = document.getElementById('Id').value;
@@ -195,7 +248,6 @@
                         mostrarToast("No se puede eliminar un producto que no existe.", "info");
                         return;
                     }
-                    console.log(idAmigurumis);
                     $.ajax({
                         type: "POST",
                         url: "/src/Server/Producto.php",
@@ -208,12 +260,10 @@
                                     window.location.href = 'p_GestionCatalogo.php';
                                 }, 1500);
                             } else {
-                                console.log("Respuesta inesperada del servidor:", response);
                                 mostrarToast("Ocurrió un problema al eliminar el producto.", "error");
                             }
                         },
                         error: function(jqXHR, textStatus, errorThrown) {
-                            console.error("Error en la solicitud AJAX:", textStatus, errorThrown);
                             mostrarToast("Error al conectar con el servidor. Intente de nuevo más tarde.", "error");
                         }
                     });
@@ -226,10 +276,8 @@
             location.reload();
         });
 
-        // Inicializar el botón de la galería al cargar la página
         setupGalleryButton();
 
-        // Recuperar datos del localStorage y completar el formulario
         const editAmigurumi = JSON.parse(localStorage.getItem('editAmigurumi'));
         if (editAmigurumi) {
             document.getElementById('image-url').value = editAmigurumi.imagenSrc;
@@ -241,7 +289,7 @@
 
             const dropzoneArea = document.getElementById('dropzone-area');
             dropzoneArea.innerHTML = `<img src="${editAmigurumi.imagenSrc}" alt="Preview">`;
-        }   
+        }
     </script>
 </body>
 </html>
