@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mugumis Store</title>
     <link rel="icon" href="../Assets/Mugumis.ico" type="image/x-icon">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../Estilos/stylesIndex.css">
-    <link rel="stylesheet" href="../Estilos/stylesModal.css">
+    <link rel="stylesheet" href="../Estilos/stylesModal.css?v=1.1">
     <link rel="stylesheet" href="../Estilos/stylesNotificacion.css">
+    <link rel="stylesheet" href="../Estilos/stylesCatalogo.css">
 </head>
+
 <body>
     <!-- Barra de navegación -->
     <nav>
@@ -17,8 +21,8 @@
             <img src="../Assets/logoMugumis.png" alt="Logo">
         </div>
         <ul>
-            <li><a href="index.html">Inicio</a></li>
-            <li><a href="catalogo.html">Catálogo</a></li>
+            <li><a href="p_Inicio.html">Inicio</a></li>
+            <li><a href="p_Catalogo.php">Catálogo</a></li>
             <li><a href="#contacto">Contacto</a></li>
         </ul>
         <div class="user-reg">
@@ -26,7 +30,7 @@
         </div>
     </nav>
 
-        <!-- Modal de registro de correo electrónico -->
+    <!-- Modal de registro de correo electrónico -->
     <div id="registerEmailModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -34,7 +38,7 @@
             <form id="registerEmailForm">
                 <label for="email">Correo electrónico:</label>
                 <input type="email" id="email" name="email" required>
-                <p></p><button type="submit">Registrar</button></p>
+                <button type="submit">Registrar</button>
             </form>
         </div>
     </div>
@@ -52,7 +56,7 @@
                 <input type="text" id="lastName" name="lastName" required>
                 <label for="phoneNumber">Número de Teléfono:</label>
                 <input type="tel" id="phoneNumber" name="phoneNumber" required>
-                <p></p><button type="submit">Registrar</button></p>
+                <button type="submit">Registrar</button>
             </form>
         </div>
     </div>
@@ -65,73 +69,69 @@
         </div>
     </div>
 
-    <!-- Encabezado con galería de imágenes -->
-    <header>
-        <div class="gallery">
-            <div class="gallery-item">
-                <img src="../Assets/banners/banner-1.jpg" alt="Imagen 1">
-            </div>
-            <div class="gallery-item">
-                <img src="../Assets/banners/banner-2.jpg" alt="Imagen 2">
-            </div>
-            <div class="gallery-item">
-                <img src="../Assets/banners/banner-3.jpg" alt="Imagen 3">
-            </div>
+    <!-- Notificación de correo existente -->
+    <div id="notificationEmailExists" class="notification">
+        <div class="notification-content">
+            <i class="fa fa-exclamation-circle"></i>
+            <p>El correo electrónico ya está registrado</p>
         </div>
-    </header>
+    </div>
 
-    <!-- Información sobre Mugumis -->
-    <main id="main">
-        <h1>Conoce sobre nosotros</h1>
-        <div class="section-container">
-            <img src="../Assets/mision-mugumis.jpg" alt="Misión">
-            <div class="section-content">
-                <section>
-                    <h2>Misión</h2>
-                    <p>Brindar alegría y calidez a través de la creación de amigurumis 
-                        únicos y personalizados, confeccionados con amor y precisión.</p>
-                </section>
-            </div>
-        </div>
-        <div class="section-container">
-            <img src="../Assets/vision-mugumis.jpg" alt="Visión">
-            <div class="section-content">
-                <section>
-                    <h2>Visión</h2>
-                    <p>Ser reconocidos como un referente en el mundo de los amigurumis, 
-                        destacándonos por nuestra creatividad, calidad y compromiso con la 
-                        satisfacción del cliente.</p>
-                </section>
-            </div>
-        </div>
-        <div class="section-container">
-            <img src="../Assets/enfoque-mugumis.jpg" alt="Enfoque">
-            <div class="section-content">
-                <section>
-                    <h2>Nuestro Enfoque</h2>
-                    <p>El mercado objetivo de "Mugumis Store" incluye personas que buscan 
-                        regalos especiales, coleccionistas de amigurumis y amantes de los juguetes 
-                        hechos a mano. Nos dirigimos a personas que valoran la artesanía, la creatividad y 
-                        la personalización en sus productos, y que desean adquirir amigurumis únicos y de 
-                        alta calidad para sí mismos o como regalos para sus seres queridos.</p>
-                </section>
-            </div>
-        </div>
+    <!-- Catálogo de productos -->
+    <main>
+        <h1>Mugumis Disponibles</h1>
+        <section>
+            <?php
+            // Incluir el archivo de conexión
+            require __DIR__ . '/../Server/DB_Puerto.php';
+            try {
+                // Consulta para obtener los productos
+                $sql = "SELECT * FROM inventario_de_amigurumis WHERE cantidad_disponible > 0";
+                $stmt = $conn->query($sql);
+
+                if ($stmt->rowCount() > 0) {
+                    // Salida de cada fila
+                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                        echo '<article>';
+                        echo '<img src="' . htmlspecialchars($row["direccion_url"]) . '" alt="' . htmlspecialchars($row["nombre"]) . '">';
+                        echo '<input type="hidden" value="' . htmlspecialchars($row["id_amigurumis"]) . '">';
+                        echo '<h2>' . htmlspecialchars($row["nombre"]) . '</h2>';
+                        echo '<p>' . htmlspecialchars($row["descripcion"]) . '</p>';
+                        echo '<h4>' . htmlspecialchars($row["precio"]) . ' USD</h4>';
+                        echo '<button id="Comprar">' . 'Realizar Pedido</button>';
+                        echo '<p>' . htmlspecialchars($row["cantidad_disponible"]) . ' Disponibles</p>';
+                        echo '</article>';
+                    }
+                } else {
+                    echo 'No hay productos disponibles.';
+                }
+            } catch (PDOException $e) {
+                echo "Error de consulta: " . $e->getMessage();
+            }
+            ?>
+        </section>
     </main>
+
+    <!-- Modal de realizar pedido -->
+    <div id="modal-catalogo" class="modal-catalogo">
+        <div class="modal-content">
+            <!-- Aquí se inserta contenido para confirmar pedido -->
+        </div>
+    </div>
 
     <!-- Pie de página -->
     <footer id="contacto" class="footer">
         <div class="footer-container">
             <div class="footer-column">
                 <h3>Sobre Nosotros</h3>
-                <p>La empresa opera como un negocio independiente, ofreciendo productos de calidad artesanal 
+                <p>La empresa opera como un negocio independiente, ofreciendo productos de calidad artesanal
                     tanto a través de pedidos personalizados como de diseños básicos que son expuestos y vendidos.</p>
             </div>
             <div class="footer-column">
                 <h3>Navegación</h3>
                 <ul>
-                    <li><a href="index.html">Inicio</a></li>
-                    <li><a href="#catalogo">Catálogo</a></li>
+                    <li><a href="p_Inicio.html">Inicio</a></li>
+                    <li><a href="p_Catalogo.php">Catálogo</a></li>
                     <li><a href="#contacto">Contacto</a></li>
                 </ul>
             </div>
@@ -149,7 +149,9 @@
     </footer>
 
     <script src="../Scripts/scriptsIndex.js"></script>
-    <script src="../Scripts/scriptsModal.js"></script>
-    <script src="../Scripts/scriptsNotificacion.js"></script>
+    <script src="../Scripts/scriptsModal.js?v=1.2"></script>
+    <script src="../Scripts/scriptsNotificacion.js?v=1.1"></script>
+    <script src="../Scripts/scriptsCatalogo.js?v=1.1"></script>
 </body>
+
 </html>

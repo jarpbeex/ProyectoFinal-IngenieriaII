@@ -15,6 +15,19 @@
     -webkit-backdrop-filter: blur(5px);
 }
 
+.modal-content select,
+.modal-content button
+ {
+    padding: 10px 15px;
+    background-color: #2ebdff;
+    color: rgb(0, 0, 0);
+    border: none;
+    cursor: pointer;
+    border-radius: 25px;
+    font-size: 15px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
 .modal-content {
     background-color: #fff;
     margin: 10% auto;
@@ -40,7 +53,7 @@
 }
 
 .close {
-    color: #aaa;
+    color: #000000;
     float: right;
     font-size: 28px;
     font-weight: bold;
@@ -53,7 +66,7 @@
 
 .close:hover,
 .close:focus {
-    color: #333;
+    color: #000000;
 }
 
 .modal h2 {
@@ -143,6 +156,8 @@
     animation: bounce 1s;
 }
 
+
+
 @keyframes fadein {
     from {
         opacity: 0;
@@ -171,4 +186,86 @@
     60% {
         transform: translateY(-15px);
     }
+}
+
+.pedido-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 500px;
+}
+
+.pedido-container span {
+    color: #000000;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+/* .close:hover,
+.close:focus {
+    color: #000000;
+} */
+
+
+.pedido-container img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.pedido-container p {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.pedido-container input,
+.pedido-container select,
+.pedido-container button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.pedido-container button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+.close-button {
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    border: none;
+    cursor: pointer;
+    padding: 3px;
+    border-radius: 25px;
+    border-width: 1px;
+    max-width: 1px; /* Puedes ajustar este valor según tus necesidades */
+    text-align: center;
+    height: 1px;
+    margin: 0; /* Centra el botón horizontalmente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.close-button {
+    transform: scale(2.5); /* Ajusta el valor según necesites */
+}
+
+
+.pedido-container button:hover {
+    background-color: #45a049;
 }

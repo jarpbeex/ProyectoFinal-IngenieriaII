@@ -11,29 +11,19 @@
     --gray: #D3D3D3;
 }
 
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow: auto; /* Asegura el desplazamiento vertical */
-}
-
-body {
-    font-family: 'Work Sans', sans-serif;
-    background-color: var(--background);
+.dropzone-container {
     display: flex;
     justify-content: center;
-    padding: 1rem;
-    align-items: flex-start; /* Cambiar a flex-start para permitir la expansión del contenido */
+    width: 100%;
+    height: 100%;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 .dropzone-box {
     border-radius: 2rem;
     padding: 2rem;
     box-shadow: rgba(78, 81, 84, 0.118) 0px 8px 24px;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
     max-width: 36rem;
     width: 100%;
     background-color: var(--white);
@@ -55,6 +45,7 @@ body {
 .dropzone-box-area h2 {
     font-size: 2rem;
     margin-bottom: 0.5rem;
+    text-align: center;
 }
 
 .dropzone-area {
@@ -72,6 +63,8 @@ body {
     color: var(--primary);
     cursor: pointer;
     overflow: hidden;
+    cursor: pointer;
+    position: relative;
 }
 
 .dropzone-area p {
@@ -137,4 +130,60 @@ body {
     padding: 0.5rem 1rem;
     color: var(--white);
     cursor: pointer;
+}
+
+.dropzone-box-area input[type='text'],
+.dropzone-box-area textarea {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 10px 0;
+    box-sizing: border-box;
+    border: 1px solid;
+    border-radius: 25px;
+    font-size: 16px;
+}
+
+.toast {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #3498db;
+    color: #070000;
+    padding: 15px 25px;
+    border-radius: 8px;
+    display: none; /* Por defecto oculto */
+    z-index: 9999; /* Asegura que esté arriba de otros elementos */
+    font-size: 16px;
+    font-weight: 500;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.toast-icon {
+    margin-right: 10px; /* Espacio entre el icono y el mensaje */
+    font-size: 1.5rem; /* Tamaño del icono */
+}
+
+.toast.show {
+    display: flex; /* Mostrar cuando tiene la clase 'show' */
+    opacity: 1;
+    transform: translate(-50%, -50%);
+}
+
+.toast.hide {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(-20px);
+}
+
+.toast.success {
+    background-color: #85c1d3; /* Color verde para éxito */
+}
+
+.toast.error {
+    background-color: #ff9187; /* Color rojo para error */
+}
+
+.toast.info {
+    background-color: #434083; /* Color azul para información */
 }
